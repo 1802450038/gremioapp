@@ -72,6 +72,18 @@ jQuery("input.telefone")
         }
     });
 
+jQuery("input.residencial")
+    .mask("(99) 9999-9999")
+    .focusout(function(event) {
+        var target, phone, element;
+        target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+        phone = target.value.replace(/\D/g, '');
+        element = $(target);
+        element.unmask();
+
+        element.mask("(99) 9999-9999");
+    });
+
 
 function toggleCheck(receviedElement) {
 

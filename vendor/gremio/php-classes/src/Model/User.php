@@ -1,10 +1,10 @@
 <?php
 
-namespace prefeitura\Model;
+namespace gremio\Model;
 
-use \prefeitura\DB\Sql;
-use \prefeitura\Model;
-use \prefeitura\Mailer;
+use \gremio\DB\Sql;
+use \gremio\Model;
+use \gremio\Mailer;
 
 class User extends Model
 {

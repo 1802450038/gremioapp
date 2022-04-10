@@ -9,11 +9,11 @@
                     <div class="info-items">
                         <div class="info-box">
                             <h3 class="info-title">Responsável</h3>
-                            <a href="/admin/conductor/profile{$dependente.conductor_id}" class="profile-action-bt">{$condutor}</a>
+                            <a href="/admin/conductor/profile{$dependente.partner_id}" class="profile-action-bt">{$socio}</a>
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Nome completo</h3>
-                            <h3 class="info-value">{$dependente.dependent_name}</h3>
+                            <h3 class="info-value">{$dependente.dependent_fullname}</h3>
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Identidade</h3>
@@ -24,16 +24,20 @@
                             <h3 class="info-value">{$dependente.dependent_cpf}</h3>
                         </div>
                         <div class="info-box">
-                            <h3 class="info-title">Telefone</h3>
-                            <h3 class="info-value">{$dependente.dependent_phone}</h3>
-                        </div>
-                        <div class="info-box">
                             <h3 class="info-title">Idade</h3>
                             <h3 class="info-value">{$dependente.dependent_age}</h3>
                         </div>
                         <div class="info-box">
-                            <h3 class="info-title">Escolaridade</h3>
-                            <h3 class="info-value">{$dependente.dependent_schooling}</h3>
+                            <h3 class="info-title">Data nascimento</h3>
+                            <h3 class="info-value">{$dependente.dependent_dtnasc}</h3>
+                        </div>
+                        <div class="info-box">
+                            <h3 class="info-title">Telefone celular</h3>
+                            <h3 class="info-value">{$dependente.dependent_mobphone}</h3>
+                        </div>
+                        <div class="info-box">
+                            <h3 class="info-title">Telefone residencial</h3>
+                            <h3 class="info-value">{$dependente.dependent_resphone}</h3>
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Familiaridade</h3>

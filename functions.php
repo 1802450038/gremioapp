@@ -1,14 +1,16 @@
 <?php
 
-use prefeitura\Model\User;
+use gremio\Model\User;
 
 function getUserId()
 {
-    return $_SESSION[User::SESSION]["user_id"];
+    // return $_SESSION[User::SESSION]["user_id"];
+    return 1;
 }
 
 function getIsAdmin()
 {
 
-    return User::getUserIsAdmin();
+    // return User::getUserIsAdmin();
+    return 1;
 }

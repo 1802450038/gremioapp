@@ -1,6 +1,6 @@
 <?php
 
-namespace prefeitura;
+namespace gremio;
 
 class Model {
 

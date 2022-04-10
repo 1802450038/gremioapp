@@ -1,9 +1,9 @@
 <?php
 
-namespace prefeitura\Model;
+namespace gremio\Model;
 
-use \prefeitura\DB\Sql;
-use \prefeitura\Model;
+use \gremio\DB\Sql;
+use \gremio\Model;
 
 class Logs extends Model
 {

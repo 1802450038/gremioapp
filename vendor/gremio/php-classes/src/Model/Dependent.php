@@ -1,9 +1,9 @@
 <?php
 
-namespace prefeitura\Model;
+namespace gremio\Model;
 
-use \prefeitura\DB\Sql;
-use \prefeitura\Model;
+use \gremio\DB\Sql;
+use \gremio\Model;
 
 class Dependent extends Model
 {
@@ -31,11 +31,11 @@ class Dependent extends Model
         }
     }
 
-    public static function listByConductorId($conductor_id)
+    public static function listByPartnerId($partner_id)
     {
         $sql = new Sql();
 
-        return $sql->select("SELECT * FROM tb_dependent WHERE conductor_id='{$conductor_id}'");
+        return $sql->select("SELECT * FROM tb_dependent WHERE partner_id='{$partner_id}'");
     }
 
     public static function listAllUniqueTag()
@@ -48,32 +48,34 @@ class Dependent extends Model
         return $result;
     }
 
-    public function create($conductor_id)
+    public function create($partner_id)
     {
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
         if ($uniqueTag != null) {
             $result =  $sql->query("INSERT INTO tb_dependent (
-            conductor_id,
+            partner_id,
             dependent_uniquetag,
-            dependent_name,
-            dependent_identity,
-            dependent_cpf,
+            dependent_fullname,
+            dependent_dtnasc,
             dependent_age,
-            dependent_phone,
-            dependent_note,
-            dependent_schooling,
+            dependent_cpf,
+            dependent_identity,
+            dependent_mobphone,
+            dependent_resphone,
+            dependent_email,
             dependent_familiarity
             ) VALUES(
-                '{$conductor_id}',
+                '{$partner_id}',
                 '{$uniqueTag}',
-                '{$this->getdependent_name()}',
-                '{$this->getdependent_identity()}',
-                '{$this->getdependent_cpf()}',
+                '{$this->getdependent_fullname()}',
+                '{$this->getdependent_dtnasc()}',
                 '{$this->getdependent_age()}',
-                '{$this->getdependent_phone()}',
-                '{$this->getdependent_note()}',
-                '{$this->getdependent_schooling()}',
+                '{$this->getdependent_cpf()}',
+                '{$this->getdependent_identity()}',
+                '{$this->getdependent_mobphone()}',
+                '{$this->getdependent_resphone()}',
+                '{$this->getdependent_email()}',
                 '{$this->getdependent_familiarity()}'
                 )",);
 
@@ -131,13 +133,13 @@ class Dependent extends Model
         $sql = new Sql();
 
         $results = $sql->query("UPDATE tb_dependent SET 
-            dependent_name='{$this->getdependent_name()}',
-            dependent_identity='{$this->getdependent_identity()}',
+            dependent_fullname='{$this->getdependent_name()}',
+            dependent_dtnasc='{$this->getdependent_age()}',
             dependent_cpf='{$this->getdependent_cpf()}',
-            dependent_age='{$this->getdependent_age()}',
-            dependent_phone='{$this->getdependent_phone()}',
-            dependent_note='{$this->getdependent_note()}',
-            dependent_schooling='{$this->getdependent_schooling()}',
+            dependent_identity='{$this->getdependent_identity()}',
+            dependent_mobphone='{$this->getdependent_mobphone()}',
+            dependent_resphone='{$this->getdependent_resphone()}',
+            dependent_email='{$this->getdependent_email()}',
             dependent_familiarity='{$this->getdependent_familiarity()}'
             WHERE dependent_id='{$id}'");
 
@@ -166,10 +168,10 @@ class Dependent extends Model
 
     public function getUniqueTag()
     {
-        $prefix = "URU-";
-        $ranNumber = rand(100, 999);
+        $prefix = "GRE-";
+        $ranNumber = rand(100, 99999);
         $today = getdate()["year"] - 2000;
-        $type = "DP";
+        $type = "DEP";
         $uniqueTag = $prefix . $today . $ranNumber . $type;
         if ($this->verifyTag($uniqueTag)) {
             return $uniqueTag;

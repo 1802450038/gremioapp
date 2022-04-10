@@ -1,6 +1,0 @@
-const HOSTNAME = "mysql.uruguaiana.rs.gov.br";
-	const USERNAME = "uruguaiana01";
-	const PASSWORD = "Camaro0712";
-
-
-composer dump-autoload

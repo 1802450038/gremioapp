@@ -1,9 +1,9 @@
 <?php
 
-namespace prefeitura\Model;
+namespace gremio\Model;
 
-use \prefeitura\DB\Sql;
-use \prefeitura\Model;
+use \gremio\DB\Sql;
+use \gremio\Model;
 
 class Address extends Model
 {
@@ -26,11 +26,11 @@ class Address extends Model
     }
 
 
-    public static function listByConductorId($conductor_id)
+    public static function listByPartnerId($partner_id)
     {
         $sql = new Sql();
 
-        $result = $sql->select("SELECT * FROM tb_address WHERE conductor_id='{$conductor_id}'");
+        $result = $sql->select("SELECT * FROM tb_address WHERE partner_id='{$partner_id}'");
 
         if (sizeof($result) > 0) {
             return $result[0];
@@ -69,7 +69,7 @@ class Address extends Model
         if ($uniqueTag != null) {
             $results = $sql->query(
                 "INSERT INTO tb_address(
-                conductor_id,
+                partner_id,
                 address_uniquetag,
                 address_road,
                 address_number,
@@ -136,7 +136,7 @@ class Address extends Model
     public function getUniqueTag()
     {
         $prefix = "URU-";
-        $ranNumber = rand(100, 999);
+        $ranNumber = rand(100, 99999);
         $today = getdate()["year"] - 2000;
         $type = "AD";
         $uniqueTag = $prefix . $today . $ranNumber . $type;

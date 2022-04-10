@@ -1,13 +1,13 @@
 <?php 
 
-namespace prefeitura\DB;
+namespace gremio\DB;
 
 class Sql {
 
-	const HOSTNAME = "mysql.uruguaiana.rs.gov.br";
-	const USERNAME = "uruguaiana01";
-	const PASSWORD = "Camaro0712";
-	const DBNAME = "uruguaiana01";
+	const HOSTNAME = "localhost";
+	const USERNAME = "root";
+	const PASSWORD = "";
+	const DBNAME = "gremio01";
 
 	private $conn;
 
