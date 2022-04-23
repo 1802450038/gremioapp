@@ -426,6 +426,18 @@ $app->get('/admin/dependent/create:partner_id', function ($partner_id) {
 });
 
 
+$app->get('/admin/payment/create:partner_id', function ($partner_id) {
+
+	$page = new PageAdmin();
+
+	$partner_name = Payment::getPartnerName($partner_id);
+
+	$page->setTpl("payment-create", array(
+		"socio"=>$partner_name
+	));
+});
+
+
 // Get  create-end
 
 // Get update
@@ -444,13 +456,17 @@ $app->get('/admin/partner/profile:id', function ($id) {
 
 	$dependents = Dependent::listByPartnerId($id);
 
+	$payments = Payment::listByPartnerId($id);
+
+
 	$partner->get($id);
 
 
 	$page->setTpl("partner-profile", array(
 		"socio" => $partner->getValues(),
 		"endereco" => $address,
-		"dependentes" => $dependents
+		"dependentes" => $dependents,
+		"pagamentos" =>$payments
 	));
 });
 
@@ -809,6 +825,23 @@ $app->post('/admin/address/create:partner_id', function ($partner_id) {
 
 	$address->create($partner_id);
 
+	header("location: /admin/partner/profile$partner_id");
+	exit;
+});
+
+$app->post('/admin/payment/create:partner_id', function ($partner_id) {
+
+	$payment = new Payment();
+
+	$payment->setpayment_uniquetag($payment->getUniqueTag());
+
+	$payment->setData($_POST);
+
+	// var_dump($payment);
+	$payment->create($partner_id);
+
+
+	// var_dump($payment);
 	header("location: /admin/partner/profile$partner_id");
 	exit;
 });

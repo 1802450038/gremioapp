@@ -4,7 +4,7 @@
             <div class="entity-profile-card-top card-category">
 
                 <div class="entity-img">
-                    <img src="<?php echo htmlspecialchars( $socio["partner_profilepicture"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" alt="" srcset="">
+                    <img src="<?php echo htmlspecialchars( $socio["partner_profilepicture"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" alt="" srcset="" style="display: none;">
                 </div>
 
                 <div class="entity-title">
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="sub-card-category">
+                <div class="sub-card-category" style="display: none;">
                     <div class="row card-category-title">
                         <h3>Imagens</h3>
                     </div>
@@ -209,6 +209,48 @@
                     <?php } ?>
                     <div class="new-element">
                         <a href="/admin/dependent/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button">
+                            <button>
+                                Incluir novo
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="entity-profile-bottom-depends sub-card-category">
+                    <div class="card-category-title">
+                        <h3>Pagamentos</h3>
+                    </div>
+                    <?php if( $pagamentos != false ){ ?>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="font-weight: bolder;">ID</th>
+                                    <th>Nome</th>
+                                    <th>Data</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $counter1=-1;  if( isset($pagamentos) && ( is_array($pagamentos) || $pagamentos instanceof Traversable ) && sizeof($pagamentos) ) foreach( $pagamentos as $key1 => $value1 ){ $counter1++; ?>
+                                <tr>
+                                    <td style="font-weight: bolder;"><?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["payment_payer"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["payment_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td>
+                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
+                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php }else{ ?>
+                    <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum pagamento registrado</h3>
+                    <?php } ?>
+                    <div class="new-element">
+                        <a href="/admin/payment/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button">
                             <button>
                                 Incluir novo
                             </button>

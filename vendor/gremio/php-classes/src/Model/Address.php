@@ -62,7 +62,7 @@ class Address extends Model
         }
     }
 
-    public function create($conductor_id)
+    public function create($partner_id)
     {
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
@@ -79,7 +79,7 @@ class Address extends Model
                 address_city,
                 address_state
                 ) VALUES(
-                    '{$conductor_id}',
+                    '{$partner_id}',
                     '{$uniqueTag}',
                     '{$this->getaddress_road()}',
                     '{$this->getaddress_number()}',

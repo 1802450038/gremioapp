@@ -4,7 +4,7 @@
             <div class="entity-profile-card-top card-category">
 
                 <div class="entity-img">
-                    <img src="{$socio.partner_profilepicture}" alt="" srcset="">
+                    <img src="{$socio.partner_profilepicture}" alt="" srcset="" style="display: none;">
                 </div>
 
                 <div class="entity-title">
@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="sub-card-category">
+                <div class="sub-card-category" style="display: none;">
                     <div class="row card-category-title">
                         <h3>Imagens</h3>
                     </div>
@@ -209,6 +209,48 @@
                     {/if}
                     <div class="new-element">
                         <a href="/admin/dependent/create{$socio.partner_id}" class="new-element-button">
+                            <button>
+                                Incluir novo
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="entity-profile-bottom-depends sub-card-category">
+                    <div class="card-category-title">
+                        <h3>Pagamentos</h3>
+                    </div>
+                    {if="$pagamentos != false"}
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="font-weight: bolder;">ID</th>
+                                    <th>Nome</th>
+                                    <th>Data</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {loop="$pagamentos"}
+                                <tr>
+                                    <td style="font-weight: bolder;">{$value.payment_id}</td>
+                                    <td>{$value.payment_payer}</td>
+                                    <td>{$value.payment_dtregister}</td>
+                                    <td>
+                                        <a href="/admin/payment/profile{$value.payment_id}" class="small-action-btn">👁</a>
+                                        <a href="/admin/payment/profile{$value.payment_id}" class="action-btn">Visualizar</a>
+                                    </td>
+                                </tr>
+                                {/loop}
+                            </tbody>
+                        </table>
+                    </div>
+                    {else}
+                    <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum pagamento registrado</h3>
+                    {/if}
+                    <div class="new-element">
+                        <a href="/admin/payment/create{$socio.partner_id}" class="new-element-button">
                             <button>
                                 Incluir novo
                             </button>

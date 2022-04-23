@@ -9,7 +9,7 @@
                     <div class="info-items">
                         <div class="info-box">
                             <h3 class="info-title">Responsável</h3>
-                            <a href="/admin/conductor/profile<?php echo htmlspecialchars( $dependente["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="profile-action-bt"><?php echo htmlspecialchars( $socio, ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
+                            <a href="/admin/partner/profile<?php echo htmlspecialchars( $dependente["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="profile-action-bt"><?php echo htmlspecialchars( $socio, ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Nome completo</h3>

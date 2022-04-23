@@ -1,0 +1,48 @@
+Tirar idade < Todos
+
+formulario -> Apenas nome completo obrigatorio
+
+Militar sem desconto e civil pagam
+
+Orga Quartel
+
+
+Salvar Registros de acesso adicionar
+
+
+Categorizar os pagamentos em um modulo -> realizar buscas e filtros
+
+
+Priorizar listagem de pagamentos e quantidade
+
+Alterar data d
+
+Separar modo de pagamentos
+
+Adicionar observação para a edição quanto a data de pagamento para 3meses
+
+
+TODOS PAGAMENTOS SÃO "EFETUADOS" DIA Ultimo dia mes
+
+Adicionar para status 
+
+Em dia | Atraso | Atrasado 3 meses
+
+Remover dia de pagamento
+
+
+aproximanente numero de socios APROX 500 
+
+informar paginação quantidade
+
+Atualizar data de registro, se pessoa superior a 25A vira remido e troca a cor e zerar mensalidade
+
+INTERFACE
+
+AUMENTAR A FONTE
+
+Adicionar juros  para pagamento atrasado de 10% Pelo atraso sobre a parcela, não cumulativo
+
+Pagamneto Pegar data do sistema
+
+Todos com mensalidade a partir de janeiro de 22

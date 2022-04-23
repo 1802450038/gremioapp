@@ -8,80 +8,57 @@ use \gremio\Model;
 class Payment extends Model
 {
 
-    public static function listAll()
-    {
 
+    public static function listByPartnerId($partner_id)
+    {
         $sql = new Sql();
 
-        return $sql->select("SELECT * FROM tb_log");
+        return  $sql->select("SELECT * FROM tb_payment WHERE payment_id='{$partner_id}'");
+
+  
     }
-
-    public function listLogsPageSearch($type="log_id",$term = "", $page = 1, $itemsPerPage = 3)
-	{
-
-		$start = ($page - 1) * $itemsPerPage;
-
-		$sql = new Sql();
-
-		$results = $sql->select("
-			SELECT SQL_CALC_FOUND_ROWS *
-			FROM tb_log
-			WHERE $type LIKE '%$term%'
-            ORDER BY log_dtregister DESC
-			LIMIT $start, $itemsPerPage;
-		",);
-
-		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
-
-		return [
-			'logs'=>$results,
-			'total'=>(int)$resultTotal[0]["nrtotal"],
-			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
-		];
-
-	} 
 
     public static function listAllUniqueTag()
     {
 
         $sql = new Sql();
 
-        $result = $sql->select("SELECT log_uniquetag  FROM tb_log");
+        $result = $sql->select("SELECT payment_uniquetag  FROM tb_payment");
 
         return $result;
     }
 
-    public function save($user_id, $user_name,$log_target,$log_targetid,$log_targetobject, $log_operation, $log_beforedescription,$log_afterdescription)
+    public function create($partner_id)
     {
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
         if ($uniqueTag != null) {
             $sql->query(
-                "INSERT INTO tb_log(
-                    log_uniquetag,
-                    user_id,
-                    user_name,
-                    log_target,
-                    log_targetid,
-                    log_targetobject,
-                    log_operation,
-                    log_beforedescription,
-                    log_afterdescription
+                "INSERT INTO tb_payment (
+                    partner_id,
+                    partner_fullname,
+                    payment_uniquetag,
+                    payment_payer,
+                    payment_note,
+                    payment_value,
+                    payment_dtregister,
+                    payment_method
                 ) VALUES(
+                    '{$partner_id}',
+                    '{$this->getpartner_fullname()}',
                     '{$uniqueTag}',
-                    '{$user_id}',
-                    '{$user_name}',
-                    '{$log_target}',
-                    '{$log_targetid}',
-                    '{$log_targetobject}',
-                    '{$log_operation}',
-                    '{$log_beforedescription}',
-                    '{$log_afterdescription}'
-                    )",
-            );
-            return "Registro adicionado com sucesso";
-        } else {
-            return "Falaha ao adicionar Conflito de TAG";
+                    '{$this->getpayment_payer()}',
+                    '{$this->getpayment_note()}',
+                    '{$this->getpayment_value()}',
+                    '{$this->getDateForDatabase($this->getpayment_dtregister())}',
+                    '{$this->getpayment_method()}'
+                    )",);
+
+        //     $results2 = $sql->select("SELECT payment_id FROM tb_payment
+        //     WHERE payment_id = LAST_INSERT_ID()");
+        //     return $results2[0];
+        // } else {
+        //     return 0;
         }
     }
 
@@ -89,7 +66,7 @@ class Payment extends Model
     {
         $sql = new Sql();
 
-        $result = $sql->select("SELECT * FROM tb_log WHERE log_id='$id'");
+        $result = $sql->select("SELECT * FROM tb_payment WHERE payment_id='$id'");
 
 
         return $this->setData($result[0]);
@@ -109,15 +86,34 @@ class Payment extends Model
 
     public function getUniqueTag()
     {
-        $prefix = "URU-";
+        $prefix = "GRE-";
         $ranNumber = rand(100, 99999999);
         $today = getdate()["year"] - 2000;
-        $type = "TG";
+        $type = "PG";
         $uniqueTag = $prefix . $today . $ranNumber . $type;
         if ($this->verifyTag($uniqueTag)) {
             return $uniqueTag;
         } else {
             $this->getUniqueTag();
         }
+    }
+
+
+    public static function getPartnerName($id)
+    {
+        $sql = new Sql();
+
+        $result = $sql->select("SELECT partner_fullname FROM tb_partner WHERE partner_id='$id'");
+
+        return $result[0]['partner_fullname'];
+    }
+
+
+    
+    public function getDateForDatabase(string $date): string
+    {
+        $timestamp = strtotime($date);
+        $date_formated = date('Y-m-d', $timestamp);
+        return $date_formated;
     }
 }

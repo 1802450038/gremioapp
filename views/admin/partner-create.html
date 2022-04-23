@@ -52,15 +52,17 @@
                         <option value="Professor (APEMU)">
                     </datalist>
                 </div>
-                <div class="input-group">
-                    <label for="partner_paymentday" class="label-input">Data de pgamento</label>
-                    <input type="date" class="text-input" id="partner_paymentday" name="partner_paymentday">
-                </div>
-                <div class="input-group">
-                    <label for="partner_monthlypayment" class="label-input">Valor mensalidade</label>
-                    <input type="text" class="text-input renda" id="partner_monthlypayment" name="partner_monthlypayment">
-                </div>
 
+
+
+                <div class="input-group">
+                    <label for="partner_dtnasc" class="label-input">Data de associação</label>
+                    <input type="date" class="text-input" id="partner_dtnasc" name="partner_dtnasc">
+                </div>
+                <!-- <div class="input-group">
+                    <label for="partner_fullname" class="label-input">Observação <span class="mandatory">*</span></label>
+                    <input type="text" class="text-input" id="partner_fullname" name="partner_fullname">
+                </div> -->
 
                 <div class="form-mandatory">
                     <p><span class="mandatory">*</span> Campos obrigatorios</p>
