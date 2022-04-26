@@ -22,7 +22,7 @@ class Dependent extends Model
     {
         $sql = new Sql();
 
-        $result = $sql->select("SELECT * FROM tb_dependent WHERE dependent_id='{$dependent_id}'");
+        $result = $sql->select("SELECT * FROM tb_dependent WHERE dependent_id='$dependent_id'");
 
         if (sizeof($result) > 0) {
             return $this->setData($result[0]);
@@ -35,7 +35,7 @@ class Dependent extends Model
     {
         $sql = new Sql();
 
-        return $sql->select("SELECT * FROM tb_dependent WHERE partner_id='{$partner_id}'");
+        return $sql->select("SELECT * FROM tb_dependent WHERE partner_id='$partner_id'");
     }
 
     public static function listAllUniqueTag()
@@ -156,6 +156,13 @@ class Dependent extends Model
         $sql = new Sql();
 
         $sql->query("DELETE FROM tb_dependent  WHERE dependent_id='{$this->getdependent_id()}'");
+    }
+
+    public static function deleteById($id)
+    {
+        $sql = new Sql();
+
+        $sql->query("DELETE FROM tb_dependent  WHERE dependent_id='{$id}'");
     }
 
 

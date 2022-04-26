@@ -3,7 +3,7 @@
         <div class="entity-profile-card">
             <div class="entity-profile-card-top card-category">
                 <div class="entity-img">
-                    
+
                 </div>
                 <div class="entity-title">
                     <div class="entity-name">
@@ -50,7 +50,7 @@
                             <h3 class="info-title">Senha</h3>
                             <h3 class="info-value" style="margin-top: 20px;"><a href="/forgot" class="profile-action-bt" style="font-weight: bold; cursor: pointer; ">Trocar senha</a></h3>
                         </div>
-                        <?php if( $administrador==1 ){ ?>
+                        <?php if( $administrador=='SIM' ){ ?>
                         <div class="info-box">
                             <h3 class="info-title">Data de registro</h3>
                             <h3 class="info-value"><?php echo htmlspecialchars( $usuario["user_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
@@ -71,7 +71,7 @@
                                     <button class="edit">Editar</button>
                                 </a>
                             </div>
-                            <?php if( $administrador==1 ){ ?>
+                            <?php if( $administrador=='SIM' ){ ?>
                             <div class="new-element-action">
                                 <a href="/admin/user/delete<?php echo htmlspecialchars( $usuario["user_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" onclick="return confirm('Deseja realmente excluir este registro?')">
                                     <button class="delete">Excluir</button>

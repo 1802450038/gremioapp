@@ -76,7 +76,11 @@
 
                         <div class="info-box">
                             <h3 class="info-title">Status</h3>
-                            <h3 class="info-value">{$socio.partner_status}</h3>
+                            {if="$situacao == 'EM DIA'"}
+                            <h3 class="info-value" style="color: rgb(66, 230, 66);">{$situacao}</td>
+                                {else}
+                                <h3 class="info-value" style="color: rgb(235, 71, 65);">{$situacao}</td>
+                                    {/if}
                         </div>
 
                         <div class="info-box">
@@ -136,8 +140,7 @@
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/address/delete{$endereco.address_id}"
-                                onclick="return confirm('Deseja realmente excluir este registro?')">
+                            <a href="/admin/address/delete{$endereco.address_id}" onclick="return confirm('Deseja realmente excluir este registro?')">
                                 <button class="delete">Excluir</button>
                             </a>
                         </div>
@@ -176,10 +179,8 @@
                                     <td>{$value.dependent_fullname}</td>
                                     <td>{$value.dependent_familiarity}</td>
                                     <td>
-                                        <a href="/admin/dependent/profile{$value.dependent_id}"
-                                            class="small-action-btn">👁</a>
-                                        <a href="/admin/dependent/profile{$value.dependent_id}"
-                                            class="action-btn">Visualizar</a>
+                                        <a href="/admin/dependent/profile{$value.dependent_id}" class="small-action-btn">👁</a>
+                                        <a href="/admin/dependent/profile{$value.dependent_id}" class="action-btn">Visualizar</a>
                                     </td>
                                 </tr>
                                 {/loop}
@@ -208,7 +209,7 @@
                             <thead>
                                 <tr>
                                     <th style="font-weight: bolder;">ID</th>
-                                    <th>Nome</th>
+                                    <th>SITUAÇÃO</th>
                                     <th>Data</th>
                                     <th>Ação</th>
                                 </tr>
@@ -217,13 +218,15 @@
                                 {loop="$pagamentos"}
                                 <tr>
                                     <td style="font-weight: bolder;">{$value.payment_id}</td>
-                                    <td>{$value.payment_payer}</td>
+                                    {if="$value.payment_status == 'PAGO'"}
+                                    <td style="color: rgb(66, 230, 66);">{$value.payment_status}</td>
+                                    {else}
+                                    <td style="color: rgb(235, 71, 65);">{$value.payment_status}</td>
+                                    {/if}
                                     <td>{$value.payment_dtregister}</td>
                                     <td>
-                                        <a href="/admin/payment/profile{$value.payment_id}"
-                                            class="small-action-btn">👁</a>
-                                        <a href="/admin/payment/profile{$value.payment_id}"
-                                            class="action-btn">Visualizar</a>
+                                        <a href="/admin/payment/profile{$value.payment_id}" class="small-action-btn">👁</a>
+                                        <a href="/admin/payment/profile{$value.payment_id}" class="action-btn">Visualizar</a>
                                     </td>
                                 </tr>
                                 {/loop}
@@ -262,8 +265,7 @@
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/partner/delete{$socio.partner_id}"
-                                onclick="return confirm('Deseja realmente excluir este registro? Todos seus dependetes, endereço e animais serão excluidos')">
+                            <a href="/admin/partner/delete{$socio.partner_id}" onclick="return confirm('Deseja realmente excluir este registro? Todos seus dependetes, endereço e cobranças serão excluidos')">
                                 <button class="delete">Excluir</button>
                             </a>
                         </div>

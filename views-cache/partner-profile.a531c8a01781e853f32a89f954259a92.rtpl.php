@@ -76,7 +76,11 @@
 
                         <div class="info-box">
                             <h3 class="info-title">Status</h3>
-                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
+                            <?php if( $situacao == 'EM DIA' ){ ?>
+                            <h3 class="info-value" style="color: rgb(66, 230, 66);"><?php echo htmlspecialchars( $situacao, ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <?php }else{ ?>
+                                <h3 class="info-value" style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $situacao, ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <?php } ?>
                         </div>
 
                         <div class="info-box">
@@ -136,8 +140,7 @@
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/address/delete<?php echo htmlspecialchars( $endereco["address_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                onclick="return confirm('Deseja realmente excluir este registro?')">
+                            <a href="/admin/address/delete<?php echo htmlspecialchars( $endereco["address_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" onclick="return confirm('Deseja realmente excluir este registro?')">
                                 <button class="delete">Excluir</button>
                             </a>
                         </div>
@@ -176,10 +179,8 @@
                                     <td><?php echo htmlspecialchars( $value1["dependent_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td><?php echo htmlspecialchars( $value1["dependent_familiarity"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
-                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="small-action-btn">👁</a>
-                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="action-btn">Visualizar</a>
+                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
+                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -208,7 +209,7 @@
                             <thead>
                                 <tr>
                                     <th style="font-weight: bolder;">ID</th>
-                                    <th>Nome</th>
+                                    <th>SITUAÇÃO</th>
                                     <th>Data</th>
                                     <th>Ação</th>
                                 </tr>
@@ -217,13 +218,15 @@
                                 <?php $counter1=-1;  if( isset($pagamentos) && ( is_array($pagamentos) || $pagamentos instanceof Traversable ) && sizeof($pagamentos) ) foreach( $pagamentos as $key1 => $value1 ){ $counter1++; ?>
                                 <tr>
                                     <td style="font-weight: bolder;"><?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
-                                    <td><?php echo htmlspecialchars( $value1["payment_payer"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <?php if( $value1["payment_status"] == 'PAGO' ){ ?>
+                                    <td style="color: rgb(66, 230, 66);"><?php echo htmlspecialchars( $value1["payment_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <?php }else{ ?>
+                                    <td style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $value1["payment_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <?php } ?>
                                     <td><?php echo htmlspecialchars( $value1["payment_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
-                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="small-action-btn">👁</a>
-                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="action-btn">Visualizar</a>
+                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
+                                        <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>
                                     </td>
                                 </tr>
                                 <?php } ?>
@@ -262,8 +265,7 @@
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/partner/delete<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                onclick="return confirm('Deseja realmente excluir este registro? Todos seus dependetes, endereço e animais serão excluidos')">
+                            <a href="/admin/partner/delete<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" onclick="return confirm('Deseja realmente excluir este registro? Todos seus dependetes, endereço e cobranças serão excluidos')">
                                 <button class="delete">Excluir</button>
                             </a>
                         </div>

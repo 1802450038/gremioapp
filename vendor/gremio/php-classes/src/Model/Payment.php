@@ -13,9 +13,19 @@ class Payment extends Model
     {
         $sql = new Sql();
 
-        return  $sql->select("SELECT * FROM tb_payment WHERE payment_id='{$partner_id}'");
+        return  $sql->select("SELECT * FROM tb_payment WHERE partner_id='{$partner_id}'");
 
-  
+    }
+    public static function listByPartnerIdCount($partner_id)
+    {
+        $sql = new Sql();
+
+        return  $sql->select("
+        SELECT * 
+        FROM tb_payment 
+        WHERE partner_id='{$partner_id}' 
+        ORDER BY payment_dtregister DESC LIMIT 0,12");
+
     }
 
     public static function listAllUniqueTag()
@@ -41,7 +51,6 @@ class Payment extends Model
                     payment_payer,
                     payment_note,
                     payment_value,
-                    payment_dtregister,
                     payment_method
                 ) VALUES(
                     '{$partner_id}',
@@ -50,7 +59,6 @@ class Payment extends Model
                     '{$this->getpayment_payer()}',
                     '{$this->getpayment_note()}',
                     '{$this->getpayment_value()}',
-                    '{$this->getDateForDatabase($this->getpayment_dtregister())}',
                     '{$this->getpayment_method()}'
                     )",);
 
@@ -77,7 +85,7 @@ class Payment extends Model
         $allTags = $this->listAllUniqueTag();
         
             for ($i = 0; $i < sizeof($allTags); $i++) {
-                if ($tag === $allTags[$i]["log_uniquetag"]) {
+                if ($tag === $allTags[$i]["payment_uniquetag"]) {
                     return false;
                 }
             }
@@ -108,6 +116,14 @@ class Payment extends Model
         return $result[0]['partner_fullname'];
     }
 
+    public static function getPartnerValue($id)
+    {
+        $sql = new Sql();
+
+        $result = $sql->select("SELECT partner_monthlypayment FROM tb_partner WHERE partner_id='$id'");
+
+        return $result[0]["partner_monthlypayment"];
+    }
 
     
     public function getDateForDatabase(string $date): string

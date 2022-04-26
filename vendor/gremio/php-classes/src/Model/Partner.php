@@ -75,11 +75,12 @@ class Partner extends Model
     {
         $sql = new Sql();
 
-        $result = $sql->select("SELECT partner_name FROM tb_partner WHERE partner_id='$id'");
+        $result = $sql->select("SELECT partner_fullname FROM tb_partner WHERE partner_id='$id'");
 
-        return $result;
+        return $result[0]["partner_fullname"];
     }
 
+  
     public function calcAge($date)
     {
         return date_diff(date_create($date), date_create('now'))->y;
@@ -100,6 +101,17 @@ class Partner extends Model
                 return "ISENTO";
                 break;
         }
+    }
+
+    public function getPaymentStatus($id){
+        $payments = Payment::listByPartnerId($id);
+
+        foreach ($payments as $key => $value) {
+            if($value["payment_status"] == "ATRASADO"){
+                return "ATRASADO ".$value["payment_dtregister"];
+            }
+        }
+        return "EM DIA";
     }
 
     public function create()
@@ -211,7 +223,22 @@ class Partner extends Model
 
     public function delete()
     {
+
+        $id = $this->getpartner_id();
         $sql = new Sql();
+
+        $address = Address::listByPartnerId($id);
+        $dependents = Dependent::listByPartnerId($id);
+
+        if ($address) {
+            Address::deleteById($address["address_id"]);
+        }
+
+        if ($dependents) {
+            foreach ($dependents as $key => $value) {
+                Dependent::deleteById($value["dependent_id"]);
+            }
+        }
 
         $sql->query("DELETE FROM tb_partner  WHERE partner_id='{$this->getpartner_id()}'");
     }

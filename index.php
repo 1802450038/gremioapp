@@ -30,7 +30,7 @@ require_once("functions.php");
 
 $app->get('/', function () {
 
-	
+
 
 	$page = new PageAdmin();
 
@@ -66,7 +66,7 @@ $app->get('/admin', function () {
 
 $app->get('/logout', function () {
 
-	
+
 
 	User::logout();
 
@@ -199,16 +199,16 @@ $app->get('/admin/users', function () {
 	$page = new PageAdmin();
 
 	// if ((int)User::getUserIsAdmin() == 1) {
-		$page->setTpl("users", array(
-			"usuarios" => $pagination['users'],
-			// "administrador" => User::getUserIsAdmin(),
-			"administrador" => 1,
-			"pages" => $pages,
-			"tipo" => $type,
-			"termo" => $term
-		));
+	$page->setTpl("users", array(
+		"usuarios" => $pagination['users'],
+		// "administrador" => User::getUserIsAdmin(),
+		"administrador" => 1,
+		"pages" => $pages,
+		"tipo" => $type,
+		"termo" => $term
+	));
 	// } else {
-		// header("Location:/admin");
+	// header("Location:/admin");
 	// }
 });
 
@@ -426,8 +426,11 @@ $app->get('/admin/payment/create:partner_id', function ($partner_id) {
 
 	$partner_name = Payment::getPartnerName($partner_id);
 
+	$payment_value = Payment::getPartnerValue($partner_id);
+
 	$page->setTpl("payment-create", array(
-		"socio"=>$partner_name
+		"socio" => $partner_name,
+		"valor" => $payment_value
 	));
 });
 
@@ -450,17 +453,20 @@ $app->get('/admin/partner/profile:id', function ($id) {
 
 	$dependents = Dependent::listByPartnerId($id);
 
-	$payments = Payment::listByPartnerId($id);
-
+	$payments = Payment::listByPartnerIdCount($id);
 
 	$partner->get($id);
+
+
+	$payment_status = $partner->getPaymentStatus($id);
 
 
 	$page->setTpl("partner-profile", array(
 		"socio" => $partner->getValues(),
 		"endereco" => $address,
 		"dependentes" => $dependents,
-		"pagamentos" =>$payments
+		"pagamentos" => $payments,
+		"situacao"=>$payment_status
 	));
 });
 
@@ -472,8 +478,7 @@ $app->get('/admin/dependent/profile:id', function ($id) {
 
 	$dependent->listById($id);
 
-	$partnerName = "GERVASIO";
-
+	$partnerName = Partner::getPartnerName($dependent->getpartner_id());
 
 	$page->setTpl("dependent-profile", array(
 		"dependente" => $dependent->getValues(),
@@ -709,8 +714,7 @@ $app->post('/admin/user/create', function () {
 	exit;
 });
 
-
-// To finish
+// OK
 $app->post('/admin/partner/create', function () {
 
 	$partner = new Partner();
@@ -728,13 +732,12 @@ $app->post('/admin/partner/create', function () {
 
 	$result = $partner->create();
 
-
 	header("location: /admin/partner/profile$result");
-	
+
 	exit;
 });
 
-// OKK
+// OK
 $app->post('/admin/address/create:partner_id', function ($partner_id) {
 
 	$address = new Address();
@@ -768,22 +771,37 @@ $app->post('/admin/address/create:partner_id', function ($partner_id) {
 	exit;
 });
 
+// OK
 $app->post('/admin/payment/create:partner_id', function ($partner_id) {
 
 	$payment = new Payment();
 
 	$payment->setpayment_uniquetag($payment->getUniqueTag());
 
+
+
+	if (strlen($_POST["payment_payer"]) <= 0) {
+		$_POST["payment_payer"] = $_POST["partner_fullname"];
+	}
+
+	if (strlen($_POST["payment_note"]) <= 0) {
+		$_POST["payment_note"] = "Nenhuma observação";
+	}
+
+	if (strlen($_POST["payment_method"]) <= 0) {
+		$_POST["payment_method"] = "Dinheiro";
+	}
+
+
 	$payment->setData($_POST);
 
-	// var_dump($payment);
+
 	$payment->create($partner_id);
 
-
-	// var_dump($payment);
 	header("location: /admin/partner/profile$partner_id");
 	exit;
 });
+
 
 $app->post('/admin/dependent/create:partner_id', function ($conductor_id) {
 
@@ -852,10 +870,7 @@ $app->post("/forgot/reset", function () {
 		header("location: /admin/message?tipo=$tipo&sucesso=$sucesso&mensagem=$mensagem");
 		exit;
 	}
-
 });
 
 
 $app->run();
-
-

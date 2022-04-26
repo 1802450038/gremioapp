@@ -121,6 +121,14 @@ class Address extends Model
         $sql->query("DELETE FROM tb_address  WHERE address_id='{$this->getaddress_id()}'");
     }
 
+
+    public static function deleteById($id)
+    {
+        $sql = new Sql();
+
+        $sql->query("DELETE FROM tb_address  WHERE address_id='{$id}'");
+    }
+
     public function verifyTag($tag)
     {
         $allTags = $this->listAllUniqueTag();

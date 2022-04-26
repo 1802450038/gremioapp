@@ -37,26 +37,32 @@
 }
 
 1-> USER
-    > CREATE <NA>
-    > UPDATE <NA>
-    > DELETE <NA>
-
-2-> PARTNER
     > CREATE <OK>
     > UPDATE <OK>
     > DELETE <OK>
-
-3-> ADDRESS
+    > PROFILE <OK>
+    
+    2-> PARTNER
+    > CREATE <OK>
+    > UPDATE <OK>
+    > DELETE <OK>
+    > PROFILE <OK>
+    
+    3-> ADDRESS
+    > CREATE <OK>
+    > UPDATE <NA>
+    > DELETE <OK>
+    > PROFILE <NA>
+    
+    4-> DEPENDENT
     > CREATE <NA>
     > UPDATE <NA>
     > DELETE <NA>
-
-4-> DEPENDENT
-    > CREATE <NA>
-    > UPDATE <NA>
+    > PROFILE <NA>
+    > PROFILE <NA>
+    
+    5-> PAYMENT
+    > CREATE <OK>
+    # > UPDATE <NA>
     > DELETE <NA>
-
-5-> PAYMENT
-    > CREATE <NA>
-    > UPDATE <NA>
-    > DELETE <NA>
+    > PROFILE <NA>

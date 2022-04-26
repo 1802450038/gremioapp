@@ -16,13 +16,12 @@
                     </div>
                     <div class="input-group">
                         <label for="payment_value" class="label-input">Valor <span class="mandatory">*</span></label>
-                        <input type="text" class="text-input renda" id="payment_value" name="payment_value">
+                        <input type="text" class="text-input renda" id="payment_value" name="payment_value" value="<?php echo htmlspecialchars( $valor, ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
                         <label for="payment_method" class="label-input">Metodo<span class="mandatory">*</span></label>
                         <input type="text" class="text-input" id="payment_method" name="payment_method">
                     </div>
-
                     <div class="input-group">
                         <label for="payment_note" class="label-input">Observação</label>
                         <input type="text" class="text-input" id="payment_note" name="payment_note">
