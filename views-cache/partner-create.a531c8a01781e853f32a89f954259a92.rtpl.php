@@ -6,7 +6,8 @@
         <div class="content-box">
             <form method="post" action="/admin/partner/create" class="form-group" enctype="multipart/form-data">
                 <div class="input-group">
-                    <label for="partner_fullname" class="label-input">Nome completo <span class="mandatory">*</span></label>
+                    <label for="partner_fullname" class="label-input">Nome completo <span
+                            class="mandatory">*</span></label>
                     <input type="text" class="text-input" id="partner_fullname" name="partner_fullname">
                 </div>
                 <div class="input-group">
@@ -30,40 +31,29 @@
                     <input type="text" class="text-input telefone" id="partner_mobphone" name="partner_mobphone">
                 </div>
                 <div class="input-group">
-                    <label for="partner_age" class="label-input">Idade <span class="mandatory">*</span></label>
-                    <input type="text" class="text-input" id="partner_age" name="partner_age">
-                </div>
-                <div class="input-group">
                     <label for="partner_email" class="label-input">Email <span class="mandatory">*</span></label>
                     <input type="email" class="text-input" id="partner_email" name="partner_email">
                 </div>
                 <div class="input-group">
-                    <label for="partner_milorganization" class="label-input">Organização Militar <span class="mandatory">*</span></label>
-                    <input type="milorganization" class="text-input" id="partner_milorganization" name="partner_milorganization">
+                    <label for="partner_milorganization" class="label-input">Organização Militar <span
+                            class="mandatory">*</span></label>
+                    <input type="milorganization" class="text-input" id="partner_milorganization"
+                        name="partner_milorganization">
                 </div>
                 <div class="input-group">
                     <label for="partner_assoctype" class="label-input">Tipo de associação</label>
-                    <input list="type-list" type="text" class="text-input" id="partner_assoctype" name="partner_assoctype">
-                    <datalist id="type-list">
-                        <option value="Remido">
-                        <option value="Militar com desconto em folha">
-                        <option value="Militar sem desconto em folha">
-                        <option value="Civil">
-                        <option value="Professor (APEMU)">
-                    </datalist>
+                    <select type="text" class="text-input" id="partner_assoctype" name="partner_assoctype">
+                        <option value="REMIDO">REMIDO
+                        <option value="MILITAR COM DESCONTO EM FOLHA">MILITAR COM DESCONTO EM FOLHA
+                        <option value="MILITAR SEM DESCONTO EM FOLHA">MILITAR SEM DESCONTO EM FOLHA
+                        <option value="CIVIL">CIVIL
+                        <option value="PROFESSOR (APEMU)">PROFESSOR (APEMU)
+                    </select>
                 </div>
-
-
-
                 <div class="input-group">
-                    <label for="partner_dtnasc" class="label-input">Data de associação</label>
-                    <input type="date" class="text-input" id="partner_dtnasc" name="partner_dtnasc">
+                    <label for="partner_dtassoc" class="label-input">Data de associação</label>
+                    <input type="date" class="text-input" id="partner_dtassoc" name="partner_dtassoc">
                 </div>
-                <!-- <div class="input-group">
-                    <label for="partner_fullname" class="label-input">Observação <span class="mandatory">*</span></label>
-                    <input type="text" class="text-input" id="partner_fullname" name="partner_fullname">
-                </div> -->
-
                 <div class="form-mandatory">
                     <p><span class="mandatory">*</span> Campos obrigatorios</p>
                 </div>

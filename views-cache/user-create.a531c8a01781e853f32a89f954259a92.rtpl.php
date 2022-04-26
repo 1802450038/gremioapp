@@ -1,4 +1,4 @@
-<div class="content-body">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="content-body">
     <div class="register-box">
         <div class="title-box">
             <h3>Registrar usuario</h3>

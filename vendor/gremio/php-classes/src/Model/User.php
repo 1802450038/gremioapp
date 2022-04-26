@@ -146,10 +146,8 @@ class User extends Model
                 user_sector,
                 user_office,
                 user_email,
-                user_phone,
                 user_login,
-                user_password,
-                user_profilepicture
+                user_password
                 ) VALUES(
                     '{$uniqueTag}',
                     '{$this->getuser_isadmin()}',
@@ -157,10 +155,8 @@ class User extends Model
                     '{$this->getuser_sector()}',
                     '{$this->getuser_office()}',
                     '{$this->getuser_email()}',
-                    '{$this->getuser_phone()}',
                     '{$this->getuser_login()}',
-                    '{$this->getuser_password()}',
-                    '{$this->getuser_profilepicture()}'
+                    '{$this->getuser_password()}'
                     )",
             );
             $results2 = $sql->select("SELECT user_id FROM tb_user
@@ -257,10 +253,8 @@ class User extends Model
         user_name='{$this->getuser_name()}',
         user_sector='{$this->getuser_sector()}',
         user_office='{$this->getuser_office()}',
-        user_phone='{$this->getuser_phone()}',
         user_login='{$this->getuser_login()}',
-        user_email='{$this->getuser_email()}',
-        user_profilepicture='{$this->getuser_profilepicture()}'
+        user_email='{$this->getuser_email()}'
         WHERE user_id= '{$id}'");
     }
 
@@ -268,24 +262,11 @@ class User extends Model
     {
         $sql = new Sql();
 
-        $this->removePicture($this->getuser_profilepicture());
 
         $sql->query("DELETE FROM tb_user  WHERE user_id='{$this->getuser_id()}'");
     }
 
-    public function removePicture($picture)
-    {
-        if ($picture == "/res/_assets/_defaultimg/user.jpg") {
-            echo "IMAGEM PADRÃO";
-        } else {
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . $picture)) {
-                unlink($_SERVER['DOCUMENT_ROOT'] . $picture);
-                echo "File Successfully Delete.";
-            } else {
-                echo "File does not exists or default picture";
-            }
-        }
-    }
+
 
     public function verifyTag($tag)
     {
@@ -311,56 +292,6 @@ class User extends Model
         } else {
             $this->getUniqueTag();
         }
-    }
-
-    public function checkphoto()
-    {
-        if (file_exists(
-            $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .
-                "res" . DIRECTORY_SEPARATOR .
-                "_assets" . DIRECTORY_SEPARATOR .
-                "_userimg" . DIRECTORY_SEPARATOR .
-                $this->getuser_uniquetag() . ".jpg"
-        )) {
-            $url = "/res/_assets/_userimg/"  . $this->getuser_uniquetag() . ".jpg";
-        } else {
-            $url = "/res/_assets/_defaultimg/user.jpg";
-        }
-        return $this->setuser_profilepicture($url);
-    }
-
-    public function setPhoto($photo)
-    {
-        $extension = explode('.', $photo['name']);
-        $extension = end($extension);
-
-        switch ($extension) {
-            case "jpg":
-            case "jpeg":
-                $image = imagecreatefromjpeg($photo["tmp_name"]);
-                break;
-
-            case "gif":
-                $image = imagecreatefromgif($photo["tmp_name"]);
-                break;
-
-            case "png":
-                $image = imagecreatefrompng($photo["tmp_name"]);
-                break;
-        }
-
-        $dist =  $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR .
-            "res" . DIRECTORY_SEPARATOR .
-            "_assets" . DIRECTORY_SEPARATOR .
-            "_userimg" . DIRECTORY_SEPARATOR .
-            $this->getuser_uniquetag() .
-            ".jpg";
-
-        imagejpeg($image, $dist);
-
-        imagedestroy($image);
-
-        $this->checkphoto();
     }
 
     public static function getForgot($email)

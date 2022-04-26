@@ -48,6 +48,11 @@ class Dependent extends Model
         return $result;
     }
 
+    public function calcAge($date)
+    {
+        return date_diff(date_create($date), date_create('now'))->y;
+    }
+
     public function create($partner_id)
     {
         $sql = new Sql();
@@ -70,7 +75,7 @@ class Dependent extends Model
                 '{$uniqueTag}',
                 '{$this->getdependent_fullname()}',
                 '{$this->getdependent_dtnasc()}',
-                '{$this->getdependent_age()}',
+                '{$this->calcAge($this->getdependent_dtnasc())}',
                 '{$this->getdependent_cpf()}',
                 '{$this->getdependent_identity()}',
                 '{$this->getdependent_mobphone()}',

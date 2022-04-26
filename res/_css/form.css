@@ -295,6 +295,17 @@ input.input-photo {
     transition: var(--trasition-1);
 }
 
+.input-group select {
+    border-radius: 20px;
+    height: 30px;
+    outline: none;
+    border: 1px solid var(--white-g-l);
+    background-color: var(--white-r);
+    padding-left: 15px;
+    color: var(--white-g-l);
+    font-size: 13pt;
+}
+
 @media only screen and (min-width: 600px) {
     .register-box {
         width: 60%;

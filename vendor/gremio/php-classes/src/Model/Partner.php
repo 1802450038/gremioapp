@@ -80,8 +80,32 @@ class Partner extends Model
         return $result;
     }
 
+    public function calcAge($date)
+    {
+        return date_diff(date_create($date), date_create('now'))->y;
+    }
+
+    public function getMonthlValue($assoctype)
+    {
+        switch ($assoctype) {
+
+            case "CIVIL":
+                return "60,00";
+                break;
+            case "MILITAR SEM DESCONTO EM FOLHA":
+                return "60,00";
+                break;
+
+            default:
+                return "ISENTO";
+                break;
+        }
+    }
+
     public function create()
     {
+
+
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
         if ($uniqueTag != null) {
@@ -97,6 +121,7 @@ class Partner extends Model
                     partner_email,
                     partner_milorganization,
                     partner_assoctype,
+                    partner_dtassoc,
                     partner_paymentday,
                     partner_monthlypayment
                     ) VALUES(
@@ -107,12 +132,13 @@ class Partner extends Model
                         '{$this->getDateForDatabase($this->getpartner_dtnasc())}',
                         '{$this->getpartner_resphone()}',
                         '{$this->getpartner_mobphone()}',
-                        '{$this->getpartner_age()}',
+                        '{$this->calcAge($this->getpartner_dtnasc())}',
                         '{$this->getpartner_email()}',
                         '{$this->getpartner_milorganization()}',
                         '{$this->getpartner_assoctype()}',
-                        '{$this->getDateForDatabase($this->getpartner_paymentday())}',
-                        '{$this->getpartner_monthlypayment()}'
+                        '{$this->getDateForDatabase($this->getpartner_dtassoc())}',
+                        '{$this->getDateForDatabase("2021-01-30")}',
+                        '{$this->getMonthlValue($this->getpartner_assoctype())}'
                     )",);
             $result = $sql->select("SELECT partner_id FROM tb_partner
                 WHERE partner_id = LAST_INSERT_ID()");
@@ -124,21 +150,20 @@ class Partner extends Model
     {
         $sql = new Sql();
 
-        $results = $sql->query("UPDATE tb_conductor SET 
+        $results = $sql->query("UPDATE tb_partner SET 
             partner_fullname='{$this->getpartner_fullname()}',
             partner_cpf='{$this->getpartner_cpf()}',
             partner_identity='{$this->getpartner_identity()}',
             partner_dtnasc='{$this->getDateForDatabase($this->getpartner_dtnasc())}',
             partner_resphone='{$this->getpartner_resphone()}',
             partner_mobphone='{$this->getpartner_mobphone()}',
-            partner_age='{$this->getpartner_age()}',
+            partner_age='{$this->calcAge($this->getpartner_dtnasc())}',
             partner_email='{$this->getpartner_email()}',
-            partner_miliorganization='{$this->getpartner_miliorganization()}',
+            partner_milorganization='{$this->getpartner_milorganization()}',
             partner_assoctype='{$this->getpartner_assoctype()}',
-            partner_status='{$this->getpartner_status()}'
-            partner_paymentday='{$this->getDateForDatabase($this->getpartner_paymentday())}'
-            partner_monthlypayment='{$this->getpartner_monthlypayment()}'
-            WHERE partner_id='{$id}'");
+            partner_dtassoc='{$this->getDateForDatabase($this->getpartner_dtassoc())}',
+            partner_monthlypayment='{$this->getMonthlValue($this->getpartner_assoctype())}'
+            WHERE partner_id= '{$id}'");
 
         return $results;
     }

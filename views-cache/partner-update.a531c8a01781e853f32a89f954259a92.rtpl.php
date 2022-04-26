@@ -1,85 +1,68 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><div class="content-body">
     <div class="register-box">
         <div class="title-box">
-            <h3>Atualizar condutor</h3>
+            <h3>Atualizar Socio</h3>
         </div>
         <div class="content-box">
-            <form method="post" action="/admin/conductor/update<?php echo htmlspecialchars( $condutor["conductor_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="form-group" enctype="multipart/form-data">
+            <form method="post" action="/admin/partner/update<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="form-group"
+                enctype="multipart/form-data">
                 <div class="input-group">
-                    <label for="conductor_name" class="label-input">Nome completo <span class="mandatory">*</span></label>
-                    <input type="text" class="text-input" id="conductor_name" name="conductor_name" value="<?php echo htmlspecialchars( $condutor["conductor_name"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                </div>
-                <div class="input-group">
-                    <label for="conductor_identity" class="label-input">Identidade</label>
-                    <input type="text" class="text-input" id="conductor_identity" name="conductor_identity" value="<?php echo htmlspecialchars( $condutor["conductor_identity"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                </div>
-                <div class="input-group">
-                    <label for="conductor_phone" class="label-input">Telefone</label>
-                    <input type="text" class="text-input telefone" id="conductor_phone" name="conductor_phone" value="<?php echo htmlspecialchars( $condutor["conductor_phone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_fullname" class="label-input">Nome completo <span
+                            class="mandatory">*</span></label>
+                    <input type="text" class="text-input" id="partner_fullname" name="partner_fullname"
+                        value="<?php echo htmlspecialchars( $socio["partner_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
                 <div class="input-group">
-                    <label for="conductor_cpf" class="label-input">CPF</label>
-                    <input type="text" class="text-input cpf" id="conductor_cpf" name="conductor_cpf" value="<?php echo htmlspecialchars( $condutor["conductor_cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_cpf" class="label-input">CPF</label>
+                    <input type="text" class="text-input cpf" id="partner_cpf" name="partner_cpf"
+                        value="<?php echo htmlspecialchars( $socio["partner_cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
                 <div class="input-group">
-                    <label for="conductor_age" class="label-input">Idade <span class="mandatory">*</span></label>
-                    <input type="text" class="text-input" id="conductor_age" name="conductor_age" value="<?php echo htmlspecialchars( $condutor["conductor_age"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_identity" class="label-input">Identidade</label>
+                    <input type="text" class="text-input" id="partner_identity" name="partner_identity"
+                        value="<?php echo htmlspecialchars( $socio["partner_identity"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
                 <div class="input-group">
-                    <label for="conductor_schooling" class="label-input">Escolaridade</label>
-                    <input type="text" class="text-input" id="conductor_schooling" name="conductor_schooling" value="<?php echo htmlspecialchars( $condutor["conductor_schooling"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_dtnasc" class="label-input">Data de nascimento</label>
+                    <input type="date" class="text-input" id="partner_dtnasc" name="partner_dtnasc"
+                        value="<?php echo htmlspecialchars( $socio["partner_dtnasc"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
                 <div class="input-group">
-                    <label for="conductor_note" class="label-input">Observação</label>
-                    <input type="text" class="text-input" id="conductor_note" name="conductor_note" value="<?php echo htmlspecialchars( $condutor["conductor_note"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_resphone" class="label-input">Telefone Residencial</label>
+                    <input type="text" class="text-input residencial" id="partner_resphone" name="partner_resphone"
+                        value="<?php echo htmlspecialchars( $socio["partner_resphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
-
-                <div class="input-check-group">
-                    <span class="title-check">Possui algum beneficio ?</span>
-                    <div class="check-row">
-                        <div class="check-item">
-                            <label class="check-container">
-                                <div class="check-legend">
-                                    SIM
-                                </div>
-                                <input class="checkbox-single toggle-input" type="checkbox" name="yes"
-                                    onclick="toggleCheck(this)" <?php if( $condutor["conductor_socialbenefit"] ){ ?>checked<?php }else{ ?><?php } ?>>
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="check-item">
-                            <label class="check-container">
-                                <div class="check-legend">
-                                    NÃO
-                                </div>
-                                <input class="checkbox-single" type="checkbox" name="no"
-                                    onclick="toggleCheck(this)" <?php if( $condutor["conductor_socialbenefit"] ){ ?><?php }else{ ?>checked<?php } ?>>
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="benefit" class="label-input">Qual?</label>
-                        <input type="text" id="others" class="check-input text-input" name="benefit" value="<?php echo htmlspecialchars( $condutor["conductor_socialbenefit"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                    </div>
-                </div>
-
-
                 <div class="input-group">
-                    <label for="conductor_familyincome" class="label-input">Renda familiar</label>
-                    <input type="text" class="text-input renda" id="conductor_familyincome" name="conductor_familyincome" value="<?php echo htmlspecialchars( $condutor["conductor_familyincome"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                    <label for="partner_mobphone" class="label-input">Telefone Celular</label>
+                    <input type="text" class="text-input telefone" id="partner_mobphone" name="partner_mobphone"
+                        value="<?php echo htmlspecialchars( $socio["partner_mobphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
-
-                <div class='input-wrapper'>
-                    <img class="input-preview" src="<?php echo htmlspecialchars( $condutor["conductor_profilepicture"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                    <label for='input-file'>
-                        <?php if( $condutor["conductor_profilepicture"] ){ ?>
-                        <?php echo htmlspecialchars( $condutor["conductor_profilepicture"], ENT_COMPAT, 'UTF-8', FALSE ); ?>
-                        <?php }else{ ?>
-                        Selecione uma foto de perfil
-                        <?php } ?>
-                    </label>
-                    <input id='input-file' type='file' value='<?php echo htmlspecialchars( $condutor["conductor_profilepicture"], ENT_COMPAT, 'UTF-8', FALSE ); ?>' name="conductor_profilepicture" onchange="photoPreview(event)" />
+                <div class="input-group">
+                    <label for="partner_email" class="label-input">Email <span class="mandatory">*</span></label>
+                    <input type="email" class="text-input" id="partner_email" name="partner_email"
+                        value="<?php echo htmlspecialchars( $socio["partner_email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                </div>
+                <div class="input-group">
+                    <label for="partner_milorganization" class="label-input">Organização Militar <span
+                            class="mandatory">*</span></label>
+                    <input type="milorganization" class="text-input" id="partner_milorganization"
+                        name="partner_milorganization" value="<?php echo htmlspecialchars( $socio["partner_milorganization"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                </div>
+                <div class="input-group">
+                    <label for="partner_assoctype" class="label-input">Tipo de associação</label>
+                    <select type="text" class="text-input" id="partner_assoctype" name="partner_assoctype"
+                        value="<?php echo htmlspecialchars( $socio["partner_assoctype"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <option value="REMIDO" <?php if( $socio["partner_assoctype"]=='REMIDO' ){ ?>selected<?php } ?>>REMIDO
+                        <option value="MILITAR COM DESCONTO EM FOLHA" <?php if( $socio["partner_assoctype"]=='MILITAR COM DESCONTO EM FOLHA' ){ ?>selected<?php } ?>>MILITAR COM DESCONTO EM FOLHA
+                        <option value="MILITAR SEM DESCONTO EM FOLHA" <?php if( $socio["partner_assoctype"]=='MILITAR SEM DESCONTO EM FOLHA' ){ ?>selected<?php } ?>>MILITAR SEM DESCONTO EM FOLHA
+                        <option value="CIVIL" <?php if( $socio["partner_assoctype"]=='CIVIL' ){ ?>selected<?php } ?>>CIVIL
+                        <option value="PROFESSOR (APEMU)" <?php if( $socio["partner_assoctype"]=='PROFESSOR (APEMU)' ){ ?>selected<?php } ?>>PROFESSOR (APEMU)
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="partner_dtassoc" class="label-input">Data de associação</label>
+                    <input type="date" class="text-input" id="partner_dtassoc" name="partner_dtassoc"
+                        value="<?php echo htmlspecialchars( $socio["partner_dtassoc"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                 </div>
                 <div class="form-mandatory">
                     <p><span class="mandatory">*</span> Campos obrigatorios</p>

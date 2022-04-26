@@ -1,48 +1,62 @@
-Tirar idade < Todos
+1- Formulario {
+    # -> Apenas nome completo obrigatorio
+    #-> Tirar idade
+    # -> Remover dia de pagamento
+}
+    
+2- Pagamentos {
+    -> Categorizar os pagamentos em um modulo -> realizar buscas e filtros
+    -> Militar sem desconto e civil pagam     
+    -> Priorizar listagem de pagamentos e quantidade
+    -> Alterar data d
+    -> Separar modo de pagamentos
+    -> Adicionar observação para a edição quanto a data de pagamento para 3meses
+    -> TODOS PAGAMENTOS SÃO "EFETUADOS" DIA Ultimo dia mes
+    -> Adicionar juros  para pagamento atrasado de 10% Pelo atraso sobre a parcela, não cumulativo
+    -> Pagamento Pegar data do sistema
+    -> Todos com mensalidade a partir de janeiro de 22
+}
 
-formulario -> Apenas nome completo obrigatorio
+3- Perfil {
+    -> Adicionar para status  >> Em dia | Atraso | Atrasado 3 meses
+    -> Atualizar data de registro se pessoa superior a 25A vira remido e troca a cor e zerar mensalidade
 
-Militar sem desconto e civil pagam
+}
 
-Orga Quartel
+4- Listagem {
+    -> Informar paginação quantidade  
+}
 
+5- Interface {
+    -> Aumentar fonte
+}
 
-Salvar Registros de acesso adicionar
+6 - Geral {
+    -> Salvar Registros de acesso adicionar
+    -> Aproximanente numero de socios APROX 500 
+}
 
+1-> USER
+    > CREATE <NA>
+    > UPDATE <NA>
+    > DELETE <NA>
 
-Categorizar os pagamentos em um modulo -> realizar buscas e filtros
+2-> PARTNER
+    > CREATE <OK>
+    > UPDATE <OK>
+    > DELETE <OK>
 
+3-> ADDRESS
+    > CREATE <NA>
+    > UPDATE <NA>
+    > DELETE <NA>
 
-Priorizar listagem de pagamentos e quantidade
+4-> DEPENDENT
+    > CREATE <NA>
+    > UPDATE <NA>
+    > DELETE <NA>
 
-Alterar data d
-
-Separar modo de pagamentos
-
-Adicionar observação para a edição quanto a data de pagamento para 3meses
-
-
-TODOS PAGAMENTOS SÃO "EFETUADOS" DIA Ultimo dia mes
-
-Adicionar para status 
-
-Em dia | Atraso | Atrasado 3 meses
-
-Remover dia de pagamento
-
-
-aproximanente numero de socios APROX 500 
-
-informar paginação quantidade
-
-Atualizar data de registro, se pessoa superior a 25A vira remido e troca a cor e zerar mensalidade
-
-INTERFACE
-
-AUMENTAR A FONTE
-
-Adicionar juros  para pagamento atrasado de 10% Pelo atraso sobre a parcela, não cumulativo
-
-Pagamneto Pegar data do sistema
-
-Todos com mensalidade a partir de janeiro de 22
+5-> PAYMENT
+    > CREATE <NA>
+    > UPDATE <NA>
+    > DELETE <NA>

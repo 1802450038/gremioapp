@@ -1,4 +1,4 @@
-
+<?php if(!class_exists('Rain\Tpl')){exit;}?>
 <div class="content-body">
     <div class="list-body">
         <div class="list-body-content">
@@ -39,14 +39,14 @@
                             <th>Ação</th>
                         </thead>
                         <tbody>
-                            {loop="$usuarios"}
+                            <?php $counter1=-1;  if( isset($usuarios) && ( is_array($usuarios) || $usuarios instanceof Traversable ) && sizeof($usuarios) ) foreach( $usuarios as $key1 => $value1 ){ $counter1++; ?>
                             <tr>
-                                <td>{$value.user_id}</td>
-                                <td>{$value.user_name}</td>
-                                <td class="phone-mask">{$value.user_login}</td>
-                                <td><a class="view" href="/admin/user/profile{$value.user_id}">Visualizar</a></td>
+                                <td><?php echo htmlspecialchars( $value1["user_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <td><?php echo htmlspecialchars( $value1["user_name"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <td class="phone-mask"><?php echo htmlspecialchars( $value1["user_login"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <td><a class="view" href="/admin/user/profile<?php echo htmlspecialchars( $value1["user_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">Visualizar</a></td>
                             </tr>
-                            {/loop}
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -61,11 +61,11 @@
             <div class="list-body-bottom">
                 <div class="paginator-body">
                     <div class="paginator-items">
-                        {loop="$pages"}
+                        <?php $counter1=-1;  if( isset($pages) && ( is_array($pages) || $pages instanceof Traversable ) && sizeof($pages) ) foreach( $pages as $key1 => $value1 ){ $counter1++; ?>
                         <div class="paginator-element">
-                            <a href="{$value.link}" class="paginator-target">{$value.text}</a>
+                            <a href="<?php echo htmlspecialchars( $value1["link"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="paginator-target"><?php echo htmlspecialchars( $value1["text"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
                         </div>
-                        {/loop}
+                        <?php } ?>
                     </div>
                 </div>
             </div>

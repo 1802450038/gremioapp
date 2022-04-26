@@ -58,10 +58,6 @@ $app->get('/admin', function () {
 
 	$user = new User;
 
-
-
-	var_dump($user::listAll());
-
 	$page->setTpl("index", array(
 		"administrador" => "1",
 		"id" => "1"
@@ -177,8 +173,6 @@ $app->get('/admin/dependents', function () {
 	$page->setTpl("dependents");
 });
 
-
-
 $app->get('/admin/users', function () {
 
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
@@ -204,19 +198,19 @@ $app->get('/admin/users', function () {
 
 	$page = new PageAdmin();
 
-	if ((int)User::getUserIsAdmin() == 1) {
+	// if ((int)User::getUserIsAdmin() == 1) {
 		$page->setTpl("users", array(
 			"usuarios" => $pagination['users'],
-			"administrador" => User::getUserIsAdmin(),
+			// "administrador" => User::getUserIsAdmin(),
+			"administrador" => 1,
 			"pages" => $pages,
 			"tipo" => $type,
 			"termo" => $term
 		));
-	} else {
-		header("Location:/admin");
-	}
+	// } else {
+		// header("Location:/admin");
+	// }
 });
-
 
 $app->get('/admin/logs', function () {
 
@@ -277,7 +271,7 @@ $app->get('/admin/logs', function () {
 // Get all-end              
 
 // Get delete
-
+// OK
 $app->get('/admin/partner/delete:id', function ($id) {
 
 	$partner = new Partner();
@@ -330,11 +324,10 @@ $app->get('/admin/user/delete:id', function ($id) {
 	exit;
 });
 
-
 // Get delete-end
 
 // Get update
-
+// OK
 $app->get('/admin/partner/update:id', function ($id) {
 
 	$page = new PageAdmin();
@@ -385,6 +378,8 @@ $app->get('/admin/user/update:id', function ($id) {
 
 	$user->get($id);
 
+	var_dump(User::getUserIsAdmin());
+
 	$page->setTpl("user-update", array(
 		"usuario" => $user->getValues(),
 		"administrador" => User::getUserIsAdmin()
@@ -424,7 +419,6 @@ $app->get('/admin/dependent/create:partner_id', function ($partner_id) {
 
 	$page->setTpl("dependent-create");
 });
-
 
 $app->get('/admin/payment/create:partner_id', function ($partner_id) {
 
@@ -469,22 +463,6 @@ $app->get('/admin/partner/profile:id', function ($id) {
 		"pagamentos" =>$payments
 	));
 });
-
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
-// TO FIX
 
 $app->get('/admin/dependent/profile:id', function ($id) {
 
@@ -554,18 +532,7 @@ $app->post('/admin/user/update:id', function ($id) {
 
 	$user->get((int)$id);
 
-	if (isset($_POST["yes"])) {
-		$_POST["user_isadmin"] = "1";
-	} else	if (isset($_POST["no"])) {
-		$_POST["user_isadmin"] = "0";
-	} else {
-		$_POST["user_isadmin"] = "0";
-	}
-
 	if ($user->verifyField("user_name", "Nome", 3, $_POST["user_name"], 3, "U", $user->getuser_name()));
-	if ($user->verifyField("user_phone", "Telefone", 15, $_POST["user_phone"], 11, "U", $user->getuser_phone()));
-	if ($user->verifyField("user_login", "Login", 6, $_POST["user_login"], 6, "U", $user->getuser_login()));
-	if ($user->verifyField("user_email", "Email", 1, $_POST["user_email"], 1, "U", $user->getuser_email()));
 
 
 	$user->setData($_POST);
@@ -683,20 +650,18 @@ $app->post('/admin/partner/update:id', function ($id) {
 
 	$partner->get((int)$id);
 
-	if (strlen($_POST["partner_identity"]) == 0) {
-		$_POST["partner_identity"] = "Não informado";
-	}
-	if (strlen($_POST["partner_cpf"]) == 0) {
-		$_POST["partner_cpf"] = "Não informado";
-	}
-	if (strlen($_POST["partner_schooling"]) == 0) {
-		$_POST["partner_schooling"] = "Não informado";
-	}
+	if ($partner->verifyField("partner_fullname", "Nome", 3, $_POST["partner_fullname"], 3, "U", $partner->getpartner_fullname()));
 
-	if ($partner->verifyField("partner_name", "Nome", 3, $_POST["partner_name"], 3, "U", $partner->getpartner_name()));
-	if ($partner->verifyField("partner_age", "Idade", 1, $_POST["partner_age"], 1, "U", $partner->getpartner_age()));
+	if (strlen($_POST["partner_mobphone"]) == 0) {
+		$_POST["partner_phone"] = "Não informado";
+	}
+	if (strlen($_POST["partner_resphone"]) == 0) {
+		$_POST["partner_phone"] = "Não informado";
+	}
 
 	$partner->setData($_POST);
+
+	var_dump($partner);
 
 	$partner->update($id);
 
@@ -708,24 +673,15 @@ $app->post('/admin/partner/update:id', function ($id) {
 
 // Post create
 
+// OK
 $app->post('/admin/user/create', function () {
 
 	$user = new User();
 
 	$user->setuser_uniquetag($user->getUniqueTag());
 
-	if (isset($_POST["yes"])) {
-		$_POST["user_isadmin"] = "1";
-	} else	if (isset($_POST["no"])) {
-		$_POST["user_isadmin"] = "0";
-	} else {
-		$_POST["user_isadmin"] = "0";
-	}
-
 	if ($user->verifyField("user_name", "Nome", 3, $_POST["user_name"], 3, "C"));
-	if ($user->verifyField("user_phone", "Telefone", 15, $_POST["user_phone"], 11, "C"));
-	if ($user->verifyField("user_login", "Login", 6, $_POST["user_login"], 6, "C"));
-	if ($user->verifyField("user_email", "Email", 1, $_POST["user_email"], 1, "C"));
+
 
 	if (strlen($_POST['user_password']) < 6) {
 		$tipo = "Erro";
@@ -749,8 +705,6 @@ $app->post('/admin/user/create', function () {
 
 	$result = $user->create()["user_id"];
 
-	$log = new Logs();
-
 	header("location: /admin/user/profile$result");
 	exit;
 });
@@ -770,22 +724,7 @@ $app->post('/admin/partner/create', function () {
 		$_POST["partner_phone"] = "Não informado";
 	}
 
-	// if ($partner->verifyField("partner_fullname", "Nome", 3, $_POST["partner_fullname"], 3, "C"));
-	// if ($partner->verifyField("partner_cpf", "CPF", 14, $_POST["partner_cpf"], 11, "C"));
-	// if ($partner->verifyField("partner_identity", "Identitade", 10, $_POST["partner_identity"], 10, "C"));
-	// if ($partner->verifyField("partner_mobphone", "Telefone celular", 0, $_POST["partner_mobphone"], 0, "C"));
-	// if ($partner->verifyField("partner_resphone", "Telefone residencial", 0, $_POST["partner_resphone"], 0, "C"));
-	// if ($partner->verifyField("partner_age", "Idade", 1, $_POST["partner_age"], 1, "C"));
-
 	$partner->setData($_POST);
-
-
-	// var_dump($partner->getpartner_paymentday());
-
-
-	// echo($partner->getDateForDatabase($partner->getpartner_paymentday()));
-	
-	// var_dump($partner);
 
 	$result = $partner->create();
 
@@ -852,35 +791,7 @@ $app->post('/admin/dependent/create:partner_id', function ($conductor_id) {
 
 	$dependent->setdependent_uniquetag($dependent->getUniqueTag());
 
-	$_POST["dependent_familiarity"] = "";
-
-
 	if ($dependent->verifyField("dependent_fullname", "Nome", 3, $_POST["dependent_fullname"], 3, "C"));
-
-
-	if (strlen($_POST["dependent_age"]) == 0) {
-		$tipo = "Erro";
-		$sucesso = '0';
-		$mensagem = "Idade não informada";
-		header("location: /admin/message?tipo=$tipo&sucesso=$sucesso&mensagem=$mensagem");
-		exit;
-	}
-
-	
-
-	// if (strlen($_POST["dependent_identity"]) == 0) {
-	// 	$_POST["dependent_identity"] = "Não informado";
-	// }
-	// if (strlen($_POST["dependent_cpf"]) == 0) {
-	// 	$_POST["dependent_cpf"] = "Não informado";
-	// }
-	// if (strlen($_POST["dependent_celphone"]) == 0) {
-	// 	$_POST["dependent_phone"] = "Não informado";
-	// }
-	// if (strlen($_POST["dependent_mobphone"]) == 0) {
-	// 	$_POST["dependent_phone"] = "Não informado";
-	// }
-
 
 	$dependent->setData($_POST);
 
