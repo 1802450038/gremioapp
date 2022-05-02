@@ -7,8 +7,9 @@
             <div class="content-box">
                 <form action="" method="post" class="form-group">
                     <div class="input-group">
-                        <label for="dependent_name" class="label-input">Nome completo <span class="mandatory">*</span></label>
-                        <input type="text" class="text-input" id="dependent_name" name="dependent_name" value="{$dependente.dependent_name}">
+                        <label for="dependent_fullname" class="label-input">Nome completo <span
+                                class="mandatory">*</span></label>
+                        <input type="text" class="text-input" id="dependent_fullname" name="dependent_fullname" value="{$dependente.dependent_fullname}">
                     </div>
                     <div class="input-group">
                         <label for="dependent_identity" class="label-input">Identidade</label>
@@ -19,65 +20,35 @@
                         <input type="text" class="text-input cpf" id="dependent_cpf" name="dependent_cpf" value="{$dependente.dependent_cpf}">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_age" class="label-input">Idade <span class="mandatory">*</span></label>
-                        <input type="text" class="text-input" id="dependent_age" name="dependent_age" value="{$dependente.dependent_age}">
+                        <label for="dependent_dtnasc" class="label-input">Data de nascimento <span
+                                class="mandatory">*</span></label>
+                        <input type="date" class="text-input" id="dependent_dtnasc" name="dependent_dtnasc" value="{$dependente.dependent_dtnasc}">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_phone" class="label-input">Telefone</label>
-                        <input type="text" class="text-input telefone" id="dependent_phone" name="dependent_phone" value="{$dependente.dependent_phone}">
+                        <label for="dependent_resphone" class="label-input">Telefone Residencial</label>
+                        <input type="text" class="text-input residencial" id="dependent_resphone"
+                            name="dependent_resphone" value="{$dependente.dependent_resphone}">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_note" class="label-input">Observações</label>
-                        <input type="text" class="text-input" id="dependent_note" name="dependent_note" value="{$dependente.dependent_note}">
+                        <label for="dependent_mobphone" class="label-input">Telefone Celular</label>
+                        <input type="text" class="text-input telefone" id="dependent_mobphone"
+                            name="dependent_mobphone" value="{$dependente.dependent_mobphone}">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_schooling" class="label-input">Escolaridade</label>
-                        <input type="text" class="text-input" id="dependent_schooling" name="dependent_schooling" value="{$dependente.dependent_schooling}">
+                        <label for="dependent_email" class="label-input">Email</label>
+                        <input type="email" class="text-input" id="dependent_email" name="dependent_email" value="{$dependente.dependent_email}">
                     </div>
-                    <div class="input-check-group">
-                        <span class="title-check">Familiaridade ? <span class="mandatory">*</span></span>
-                        <div class="check-row">
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        cônjuge
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="conj" onclick="toggleFamiliarity(this)" {if="$familiaridade==='c'"}checked{/if}>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        filho/filha
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="chil" onclick="toggleFamiliarity(this)" {if="$familiaridade==='f'"}checked{/if}>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        pai/mãe
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="par" onclick="toggleFamiliarity(this)" {if="$familiaridade==='p'"}checked{/if}>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        OUTROS
-                                    </div>
-                                    <input  class="checkbox-single toggle-input" type="checkbox" name="other" onclick="toggleFamiliarity(this)" {if="$familiaridade==='o'"}checked{/if}>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label for="others" class="label-input">Outro motivo</label>
-                            <input type="text" id="others" class="check-input text-input" name="others" {if="$familiaridade !='o'"}disabled{/if} value="{$dependente.dependent_familiarity}">
-                        </div>
+
+                    <div class="input-group">
+                        <label for="dependent_familiarity" class="label-input">Familiaridade <span
+                                class="mandatory">*</span></label>
+                        <input list="state-list" type="text" class="text-input" id="dependent_familiarity"
+                            name="dependent_familiarity" value="{$dependente.dependent_familiarity}">
+                        <datalist id="state-list">
+                            <option value="CÔNJUGE">
+                            <option value="FILHO/FILHA">
+                            <option value="PAI/MÃE">
+                        </datalist>
                     </div>
                     <div class="form-mandatory">
                         <p><span class="mandatory">*</span> Campos obrigatorios</p>

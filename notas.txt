@@ -2,7 +2,6 @@
     # -> Apenas nome completo obrigatorio
     #-> Tirar idade
     # -> Remover dia de pagamento
-}
     
 2- Pagamentos {
     -> Categorizar os pagamentos em um modulo -> realizar buscas e filtros
@@ -52,14 +51,13 @@
     > CREATE <OK>
     > UPDATE <NA>
     > DELETE <OK>
-    > PROFILE <NA>
+    > PROFILE <OK>
     
     4-> DEPENDENT
     > CREATE <NA>
-    > UPDATE <NA>
+    > UPDATE <OK>
     > DELETE <NA>
-    > PROFILE <NA>
-    > PROFILE <NA>
+    > PROFILE <OK>
     
     5-> PAYMENT
     > CREATE <OK>

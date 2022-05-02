@@ -7,8 +7,9 @@
             <div class="content-box">
                 <form action="" method="post" class="form-group">
                     <div class="input-group">
-                        <label for="dependent_name" class="label-input">Nome completo <span class="mandatory">*</span></label>
-                        <input type="text" class="text-input" id="dependent_name" name="dependent_name" value="<?php echo htmlspecialchars( $dependente["dependent_name"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <label for="dependent_fullname" class="label-input">Nome completo <span
+                                class="mandatory">*</span></label>
+                        <input type="text" class="text-input" id="dependent_fullname" name="dependent_fullname" value="<?php echo htmlspecialchars( $dependente["dependent_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
                         <label for="dependent_identity" class="label-input">Identidade</label>
@@ -19,65 +20,35 @@
                         <input type="text" class="text-input cpf" id="dependent_cpf" name="dependent_cpf" value="<?php echo htmlspecialchars( $dependente["dependent_cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_age" class="label-input">Idade <span class="mandatory">*</span></label>
-                        <input type="text" class="text-input" id="dependent_age" name="dependent_age" value="<?php echo htmlspecialchars( $dependente["dependent_age"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <label for="dependent_dtnasc" class="label-input">Data de nascimento <span
+                                class="mandatory">*</span></label>
+                        <input type="date" class="text-input" id="dependent_dtnasc" name="dependent_dtnasc" value="<?php echo htmlspecialchars( $dependente["dependent_dtnasc"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_phone" class="label-input">Telefone</label>
-                        <input type="text" class="text-input telefone" id="dependent_phone" name="dependent_phone" value="<?php echo htmlspecialchars( $dependente["dependent_phone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <label for="dependent_resphone" class="label-input">Telefone Residencial</label>
+                        <input type="text" class="text-input residencial" id="dependent_resphone"
+                            name="dependent_resphone" value="<?php echo htmlspecialchars( $dependente["dependent_resphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_note" class="label-input">Observações</label>
-                        <input type="text" class="text-input" id="dependent_note" name="dependent_note" value="<?php echo htmlspecialchars( $dependente["dependent_note"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <label for="dependent_mobphone" class="label-input">Telefone Celular</label>
+                        <input type="text" class="text-input telefone" id="dependent_mobphone"
+                            name="dependent_mobphone" value="<?php echo htmlspecialchars( $dependente["dependent_mobphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
                     <div class="input-group">
-                        <label for="dependent_schooling" class="label-input">Escolaridade</label>
-                        <input type="text" class="text-input" id="dependent_schooling" name="dependent_schooling" value="<?php echo htmlspecialchars( $dependente["dependent_schooling"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <label for="dependent_email" class="label-input">Email</label>
+                        <input type="email" class="text-input" id="dependent_email" name="dependent_email" value="<?php echo htmlspecialchars( $dependente["dependent_email"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                     </div>
-                    <div class="input-check-group">
-                        <span class="title-check">Familiaridade ? <span class="mandatory">*</span></span>
-                        <div class="check-row">
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        cônjuge
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="conj" onclick="toggleFamiliarity(this)" <?php if( $familiaridade==='c' ){ ?>checked<?php } ?>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        filho/filha
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="chil" onclick="toggleFamiliarity(this)" <?php if( $familiaridade==='f' ){ ?>checked<?php } ?>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        pai/mãe
-                                    </div>
-                                    <input class="checkbox-single" type="checkbox" name="par" onclick="toggleFamiliarity(this)" <?php if( $familiaridade==='p' ){ ?>checked<?php } ?>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="check-item">
-                                <label class="check-container">
-                                    <div class="check-legend">
-                                        OUTROS
-                                    </div>
-                                    <input  class="checkbox-single toggle-input" type="checkbox" name="other" onclick="toggleFamiliarity(this)" <?php if( $familiaridade==='o' ){ ?>checked<?php } ?>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label for="others" class="label-input">Outro motivo</label>
-                            <input type="text" id="others" class="check-input text-input" name="others" <?php if( $familiaridade !='o' ){ ?>disabled<?php } ?> value="<?php echo htmlspecialchars( $dependente["dependent_familiarity"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                        </div>
+
+                    <div class="input-group">
+                        <label for="dependent_familiarity" class="label-input">Familiaridade <span
+                                class="mandatory">*</span></label>
+                        <input list="state-list" type="text" class="text-input" id="dependent_familiarity"
+                            name="dependent_familiarity" value="<?php echo htmlspecialchars( $dependente["dependent_familiarity"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                        <datalist id="state-list">
+                            <option value="CÔNJUGE">
+                            <option value="FILHO/FILHA">
+                            <option value="PAI/MÃE">
+                        </datalist>
                     </div>
                     <div class="form-mandatory">
                         <p><span class="mandatory">*</span> Campos obrigatorios</p>
