@@ -27,7 +27,7 @@
                 <div class="card-bottom"><a class="card-buttom" href="admin/user/profile{$id}">Gerenciar</a></div>
             </div>
         </div>
-        {if="$administrador==1"}
+        {if="$administrador=='SIM'"}
         <div class="card-body">
             <div class="card-bg"></div>
             <div class="card-content">
@@ -41,7 +41,7 @@
                 <div class="card-bottom"><a class="card-buttom" href="admin/users">Gerenciar</a></div>
             </div>
         </div>
-        {/if} {if="$administrador==1"}
+        {/if} {if="$administrador=='SIM'"}
         <div class="card-body class last">
             <div class="card-bg"></div>
             <div class="card-content">
@@ -56,8 +56,6 @@
             </div>
         </div>
         {/if}
-
-
     </div>
 
 </div>

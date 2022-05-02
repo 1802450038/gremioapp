@@ -28,6 +28,33 @@ class Payment extends Model
 
     }
 
+    public function listPaymentsPageSearch($partner_id, $type="payment_id",$term = "", $page = 1, $itemsPerPage = 10,$mode)
+	{
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$sql = new Sql();
+
+     
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM tb_payment
+			WHERE partner_id = $partner_id AND $type LIKE '%$term%'
+            ORDER BY payment_dtregister $mode
+			LIMIT $start, $itemsPerPage;
+		",);
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+
+		return [
+			'payments'=>$results,
+			'total'=>(int)$resultTotal[0]["nrtotal"],
+			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+
+	} 
+
     public static function listAllUniqueTag()
     {
 

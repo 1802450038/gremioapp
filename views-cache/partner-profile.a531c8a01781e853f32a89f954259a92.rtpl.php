@@ -236,24 +236,25 @@
                     <?php }else{ ?>
                     <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum pagamento registrado</h3>
                     <?php } ?>
-                    <!-- <div class="new-element">
-                        <a href="/admin/payment/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button">
-                            <button>
-                                Incluir novo
-                            </button>
-                        </a>
-                    </div> -->
+                    <div class="payment-actions">
+                        <div class="new-payment">
+                            <a href="/admin/payment/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                                <button class="edit payment-btn">
+                                    Incluir novo
+                                </button>
+                            </a>
+                        </div>
+                        <div class="view-payment">
+                            <a href="/admin/payments">
+                                <button class="print payment-btn">
+                                    Visualizar todos
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="info-items">
-                        <div class="new-element-action">
-                            <a href="/admin/payment/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button"></a>
-                            <button class="print">Incluir novo</button>
-                            </a>
-                        </div>
-                        <div class="new-element-action">
-                            <a href="/admin/partner/update<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
-                                <button class="edit">Editar</button>
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             </div>

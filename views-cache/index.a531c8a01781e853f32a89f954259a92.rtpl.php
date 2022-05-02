@@ -27,7 +27,7 @@
                 <div class="card-bottom"><a class="card-buttom" href="admin/user/profile<?php echo htmlspecialchars( $id, ENT_COMPAT, 'UTF-8', FALSE ); ?>">Gerenciar</a></div>
             </div>
         </div>
-        <?php if( $administrador==1 ){ ?>
+        <?php if( $administrador=='SIM' ){ ?>
         <div class="card-body">
             <div class="card-bg"></div>
             <div class="card-content">
@@ -41,7 +41,7 @@
                 <div class="card-bottom"><a class="card-buttom" href="admin/users">Gerenciar</a></div>
             </div>
         </div>
-        <?php } ?> <?php if( $administrador==1 ){ ?>
+        <?php } ?> <?php if( $administrador=='SIM' ){ ?>
         <div class="card-body class last">
             <div class="card-bg"></div>
             <div class="card-content">
@@ -56,8 +56,6 @@
             </div>
         </div>
         <?php } ?>
-
-
     </div>
 
 </div>
