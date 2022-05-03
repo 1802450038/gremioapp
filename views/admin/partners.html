@@ -49,7 +49,7 @@
                         <thead>
                             <th style="font-weight: bolder;">ID</th>
                             <th>Nome</th>
-                            <th>Telefone</th>
+                            <th>Situacao</th>
                             <th>Ação</th>
                         </thead>
                         <tbody>
@@ -57,7 +57,7 @@
                             <tr>
                                 <td style="font-weight: bolder;">{$value.partner_id}</td>
                                 <td>{$value.partner_fullname}</td>
-                                <td class="phone-mask">{$value.partner_mobphone}</td>
+                                <td class="phone-mask">{$value.partner_status}</td>
                                 <td>
                                     <a href="/admin/partner/profile{$value.partner_id}" class="small-action-btn">👁</a>
                                     <a href="/admin/partner/profile{$value.partner_id}" class="action-btn">Visualizar</a>

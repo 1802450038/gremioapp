@@ -66,3 +66,19 @@
     # > UPDATE <NA>
     > DELETE <NA>
     > PROFILE <NA>
+
+    payment_id
+    partner_id
+    partner_fullname
+    payment_uniquetag
+    payment_payer
+    payment_note
+    payment_dtregister
+    payment_value
+    payment_method
+    payment_status
+
+
+    Y/M/D
+    
+    eu tenho uma data 2022-04-02

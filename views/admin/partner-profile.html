@@ -76,11 +76,11 @@
 
                         <div class="info-box">
                             <h3 class="info-title">Status</h3>
-                            {if="$situacao == 'EM DIA'"}
-                            <h3 class="info-value" style="color: rgb(66, 230, 66);">{$situacao}</td>
+                            {if="$socio.partner_status == 'ATRASADO'"}
+                            <h3 class="info-value" style="color: rgb(235, 71, 65);">{$socio.partner_status}</td>
                                 {else}
-                                <h3 class="info-value" style="color: rgb(235, 71, 65);">{$situacao}</td>
-                                    {/if}
+                                <h3 class="info-value" style="color: rgb(66, 230, 66);">{$socio.partner_status}</td>
+                                {/if}
                         </div>
 
                         <div class="info-box">
@@ -240,17 +240,19 @@
                         <div class="new-payment">
                             <a href="/admin/payment/create{$socio.partner_id}">
                                 <button class="edit payment-btn">
-                                    Incluir novo
+                                    Registrar novo
                                 </button>
                             </a>
                         </div>
+                        {if="$pagamentos != false"}
                         <div class="view-payment">
-                            <a href="/admin/payments">
+                            <a href="/admin/payments{$socio.partner_id}">
                                 <button class="print payment-btn">
                                     Visualizar todos
                                 </button>
                             </a>
                         </div>
+                        {/if}
                     </div>
 
                     <div class="info-items">

@@ -14,8 +14,37 @@ class Payment extends Model
         $sql = new Sql();
 
         return  $sql->select("SELECT * FROM tb_payment WHERE partner_id='{$partner_id}'");
-
     }
+    public static function listNotPaydByPartnerId($partner_id)
+    {
+        $sql = new Sql();
+
+        return  $sql->select("
+                                SELECT payment_status,payment_dtregister 
+                                FROM tb_payment 
+                                WHERE partner_id='{$partner_id}' 
+                                AND payment_status = 'ATRASADO'
+                                ORDER BY payment_dtregister 
+                                ASC
+                            ");
+    }
+
+    public static function getLastPaymentStatus($partner_id)
+    {
+        $sql = new Sql();
+
+        $results =  $sql->select("
+                                SELECT payment_status,payment_dtregister 
+                                FROM tb_payment 
+                                WHERE partner_id='{$partner_id}' 
+                                ORDER BY payment_dtregister 
+                                ASC
+                            ");
+        if ($results) {
+            return ((int)date("m", strtotime($results[0]["payment_dtregister"]))) - ((int)date("m"));
+        }
+    }
+
     public static function listByPartnerIdCount($partner_id)
     {
         $sql = new Sql();
@@ -24,20 +53,19 @@ class Payment extends Model
         SELECT * 
         FROM tb_payment 
         WHERE partner_id='{$partner_id}' 
-        ORDER BY payment_dtregister DESC LIMIT 0,12");
-
+        ORDER BY payment_dtregister ASC LIMIT 0,12");
     }
 
-    public function listPaymentsPageSearch($partner_id, $type="payment_id",$term = "", $page = 1, $itemsPerPage = 10,$mode)
-	{
+    public function listPaymentsPageSearch($partner_id, $type = "payment_id", $term = "", $page = 1, $itemsPerPage = 10, $mode)
+    {
 
-		$start = ($page - 1) * $itemsPerPage;
+        $start = ($page - 1) * $itemsPerPage;
 
-		$sql = new Sql();
+        $sql = new Sql();
 
-     
 
-		$results = $sql->select("
+
+        $results = $sql->select("
 			SELECT SQL_CALC_FOUND_ROWS *
 			FROM tb_payment
 			WHERE partner_id = $partner_id AND $type LIKE '%$term%'
@@ -45,15 +73,14 @@ class Payment extends Model
 			LIMIT $start, $itemsPerPage;
 		",);
 
-		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+        $resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
 
-		return [
-			'payments'=>$results,
-			'total'=>(int)$resultTotal[0]["nrtotal"],
-			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
-		];
-
-	} 
+        return [
+            'payments' => $results,
+            'total' => (int)$resultTotal[0]["nrtotal"],
+            'pages' => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+        ];
+    }
 
     public static function listAllUniqueTag()
     {
@@ -65,7 +92,7 @@ class Payment extends Model
         return $result;
     }
 
-    public function create($partner_id)
+    public function create($partner_id, $payment_status = "PAGO")
     {
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
@@ -78,7 +105,8 @@ class Payment extends Model
                     payment_payer,
                     payment_note,
                     payment_value,
-                    payment_method
+                    payment_method,
+                    payment_status
                 ) VALUES(
                     '{$partner_id}',
                     '{$this->getpartner_fullname()}',
@@ -86,16 +114,79 @@ class Payment extends Model
                     '{$this->getpayment_payer()}',
                     '{$this->getpayment_note()}',
                     '{$this->getpayment_value()}',
-                    '{$this->getpayment_method()}'
-                    )",);
+                    '{$this->getpayment_method()}',
+                    '{$payment_status}'
+                    )",
+            );
 
-        //     $results2 = $sql->select("SELECT payment_id FROM tb_payment
-        //     WHERE payment_id = LAST_INSERT_ID()");
-        //     return $results2[0];
-        // } else {
-        //     return 0;
+            //     $results2 = $sql->select("SELECT payment_id FROM tb_payment
+            //     WHERE payment_id = LAST_INSERT_ID()");
+            //     return $results2[0];
+        } else {
+            return 0;
         }
     }
+
+    public function createNotPaydPayment($partner_id, $partner_fullname, $payment_status = "ATRASADO")
+    {
+        $sql = new Sql();
+
+        $payment_dtregister = date("Y-m-d", strtotime("-1 months"));
+
+        $uniqueTag = $this->getUniqueTag();
+        if ($uniqueTag != null) {
+            $sql->query(
+                "INSERT INTO tb_payment (
+                    partner_id,
+                    partner_fullname,
+                    payment_uniquetag,
+                    payment_payer,
+                    payment_note,
+                    payment_value,
+                    payment_method,
+                    payment_status,
+                    payment_dtregister
+                ) VALUES(
+                    '{$partner_id}',
+                    '{$partner_fullname}',
+                    '{$uniqueTag}',
+                    'Nenhum',
+                    'Pagamento atrasado',
+                    '0,00',
+                    'Não pago',
+                    '{$payment_status}',
+                    '{$payment_dtregister}'
+                    )",
+            );
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+
+    public static function checkNotPaydPayments($partner_id, $partner_fullname)
+    {
+
+        var_dump(Payment::getLastPaymentStatus($partner_id));
+        // if (Payment::getLastPaymentStatus($partner_id) == "ATR") {
+        //     $payment = new Payment();
+        //     $payment->createNotPaydPayment($partner_id, $partner_fullname);
+        //     Partner::updatePaymentStatus($partner_id, "ATRASADO");
+
+        // } elseif (Payment::getLastPaymentStatus($partner_id) == "EMD") {
+        //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+
+        // } elseif (Payment::getLastPaymentStatus($partner_id) == "ADN") {
+        //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+
+        // } elseif (Payment::getLastPaymentStatus($partner_id) == "NOV") {
+        //     Partner::updatePaymentStatus($partner_id, "NOVO");
+        // }
+    }
+
+
 
     public  function get($id)
     {
@@ -110,12 +201,12 @@ class Payment extends Model
     public function verifyTag($tag)
     {
         $allTags = $this->listAllUniqueTag();
-        
-            for ($i = 0; $i < sizeof($allTags); $i++) {
-                if ($tag === $allTags[$i]["payment_uniquetag"]) {
-                    return false;
-                }
+
+        for ($i = 0; $i < sizeof($allTags); $i++) {
+            if ($tag === $allTags[$i]["payment_uniquetag"]) {
+                return false;
             }
+        }
         return true;
     }
 
@@ -152,7 +243,7 @@ class Payment extends Model
         return $result[0]["partner_monthlypayment"];
     }
 
-    
+
     public function getDateForDatabase(string $date): string
     {
         $timestamp = strtotime($date);

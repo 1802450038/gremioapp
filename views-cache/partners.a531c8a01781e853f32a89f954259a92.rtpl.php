@@ -49,7 +49,7 @@
                         <thead>
                             <th style="font-weight: bolder;">ID</th>
                             <th>Nome</th>
-                            <th>Telefone</th>
+                            <th>Situacao</th>
                             <th>Ação</th>
                         </thead>
                         <tbody>
@@ -57,7 +57,7 @@
                             <tr>
                                 <td style="font-weight: bolder;"><?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td><?php echo htmlspecialchars( $value1["partner_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
-                                <td class="phone-mask"><?php echo htmlspecialchars( $value1["partner_mobphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <td class="phone-mask"><?php echo htmlspecialchars( $value1["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td>
                                     <a href="/admin/partner/profile<?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
                                     <a href="/admin/partner/profile<?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>

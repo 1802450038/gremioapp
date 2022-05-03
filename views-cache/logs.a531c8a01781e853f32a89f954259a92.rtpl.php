@@ -79,32 +79,32 @@
                         <div class="search-field-body">
                             <div class="search-input-group">
                                 <div class="input-text">
-                                    <input type="text" class="search-text-input" placeholder="Termo da busca" id="term" name="term" <?php if( $tipo =='user_name' ){ ?>value="<?php echo htmlspecialchars( $termo, ENT_COMPAT, 'UTF-8', FALSE ); ?>"<?php }elseif( $tipo=='log_uniquetag' ){ ?>value="<?php echo htmlspecialchars( $termo, ENT_COMPAT, 'UTF-8', FALSE ); ?>"<?php }else{ ?>value=""<?php } ?>">
-                                    <button class="search-btn"><span>Buscar</span><i class="fa fa-search"></i></button>
+                                    <input type="text" class="search-text-input" placeholder="Termo da busca" id="term" name="term" {if="$tipo =='user_name'" }value="<?php echo htmlspecialchars( $termo, ENT_COMPAT, 'UTF-8', FALSE ); ?>" {elseif="$tipo=='log_uniquetag'" }value="<?php echo htmlspecialchars( $termo, ENT_COMPAT, 'UTF-8', FALSE ); ?>" <?php }else{ ?>value="" <?php } ?> ">
+                                    <button class="search-btn "><span>Buscar</span><i class="fa fa-search "></i></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-                <div class="list-table-body">
+                <div class="list-table-body ">
                     <table>
                         <thead>
-                            <th style="font-weight: bold;">#</th>
+                            <th style="font-weight: bold; ">#</th>
                             <th>Nome</th>
                             <th>Tipo</th>
                             <th>Data</th>
                             <th>Ação</th>
                         </thead>
                         <tbody>
-                            <?php $counter1=-1;  if( isset($logs) && ( is_array($logs) || $logs instanceof Traversable ) && sizeof($logs) ) foreach( $logs as $key1 => $value1 ){ $counter1++; ?>
+                            <?php $counter1=-1;  if( isset($logs ) && ( is_array($logs ) || $logs  instanceof Traversable ) && sizeof($logs ) ) foreach( $logs  as $key1 => $value1 ){ $counter1++; ?>
                             <tr>
                                 <td><?php echo htmlspecialchars( $value1["log_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td><?php echo htmlspecialchars( $value1["user_name"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td><?php echo htmlspecialchars( $value1["log_operation"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td><?php echo htmlspecialchars( $value1["log_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td>
-                                    <a href="/admin/log/profile<?php echo htmlspecialchars( $value1["log_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
-                                    <a href="/admin/log/profile<?php echo htmlspecialchars( $value1["log_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>
+                                    <a href="/admin/log/profile<?php echo htmlspecialchars( $value1["log_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?> " class="small-action-btn ">👁</a>
+                                    <a href="/admin/log/profile<?php echo htmlspecialchars( $value1["log_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?> " class="action-btn ">Visualizar</a>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -112,12 +112,12 @@
                     </table>
                 </div>
             </div>
-            <div class="list-body-bottom">
-                <div class="paginator-body">
-                    <div class="paginator-items">
-                        <?php $counter1=-1;  if( isset($pages) && ( is_array($pages) || $pages instanceof Traversable ) && sizeof($pages) ) foreach( $pages as $key1 => $value1 ){ $counter1++; ?>
-                        <div class="paginator-element">
-                            <a href="<?php echo htmlspecialchars( $value1["link"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="paginator-target"><?php echo htmlspecialchars( $value1["text"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
+            <div class="list-body-bottom ">
+                <div class="paginator-body ">
+                    <div class="paginator-items ">
+                        <?php $counter1=-1;  if( isset($pages ) && ( is_array($pages ) || $pages  instanceof Traversable ) && sizeof($pages ) ) foreach( $pages  as $key1 => $value1 ){ $counter1++; ?>
+                        <div class="paginator-element ">
+                            <a href="<?php echo htmlspecialchars( $value1["link"], ENT_COMPAT, 'UTF-8', FALSE ); ?> " class="paginator-target "><?php echo htmlspecialchars( $value1["text"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
                         </div>
                         <?php } ?>
                     </div>
@@ -127,7 +127,7 @@
     </div>
 </div>
 </body>
-<script src="_js/jquery-3.6.0.min.js"></script>
-<script src="_js/index.js"></script>
+<script src="_js/jquery-3.6.0.min.js "></script>
+<script src="_js/index.js "></script>
 
 </html>

@@ -76,11 +76,11 @@
 
                         <div class="info-box">
                             <h3 class="info-title">Status</h3>
-                            <?php if( $situacao == 'EM DIA' ){ ?>
-                            <h3 class="info-value" style="color: rgb(66, 230, 66);"><?php echo htmlspecialchars( $situacao, ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                            <?php if( $socio["partner_status"] == 'ATRASADO' ){ ?>
+                            <h3 class="info-value" style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $socio["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <?php }else{ ?>
-                                <h3 class="info-value" style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $situacao, ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
-                                    <?php } ?>
+                                <h3 class="info-value" style="color: rgb(66, 230, 66);"><?php echo htmlspecialchars( $socio["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <?php } ?>
                         </div>
 
                         <div class="info-box">
@@ -240,17 +240,19 @@
                         <div class="new-payment">
                             <a href="/admin/payment/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                                 <button class="edit payment-btn">
-                                    Incluir novo
+                                    Registrar novo
                                 </button>
                             </a>
                         </div>
+                        <?php if( $pagamentos != false ){ ?>
                         <div class="view-payment">
-                            <a href="/admin/payments">
+                            <a href="/admin/payments<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                                 <button class="print payment-btn">
                                     Visualizar todos
                                 </button>
                             </a>
                         </div>
+                        <?php } ?>
                     </div>
 
                     <div class="info-items">

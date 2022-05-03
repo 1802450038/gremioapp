@@ -28,6 +28,8 @@ require_once("functions.php");
 
 // Get
 
+// verifyPayments();
+
 $app->get('/', function () {
 
 	User::verifyLogin();
@@ -134,6 +136,12 @@ $app->get("/admin/message", function () {
 // Get all
 
 $app->get('/admin/partners', function () {
+	
+	foreach (Partner::listAll() as $key => $value) {
+		var_dump($value["partner_fullname"]);
+		Payment::checkNotPaydPayments($value["partner_id"],$value["partner_fullname"]);
+	}
+
 
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 	$type = (isset($_GET['type'])) ? $_GET['type'] : "partner_fullname";
@@ -142,6 +150,7 @@ $app->get('/admin/partners', function () {
 	$partner = new Partner();
 
 	$pagination = $partner->listPertnersPageSearch($type, $term, $page);
+
 
 	$pages = [];
 
@@ -499,13 +508,15 @@ $app->get('/admin/partner/profile:id', function ($id) {
 
 	$payment_status = $partner->getPaymentStatus($id);
 
+	$payment = new Payment();
+
+	// $payment->checkNotPaydPayments();
 
 	$page->setTpl("partner-profile", array(
 		"socio" => $partner->getValues(),
 		"endereco" => $address,
 		"dependentes" => $dependents,
-		"pagamentos" => $payments,
-		"situacao"=>$payment_status
+		"pagamentos" => $payments
 	));
 });
 
@@ -833,7 +844,8 @@ $app->post('/admin/payment/create:partner_id', function ($partner_id) {
 
 
 	$payment->setData($_POST);
-
+	
+	// var_dump($payment);
 
 	$payment->create($partner_id);
 

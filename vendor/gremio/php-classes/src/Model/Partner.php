@@ -96,7 +96,6 @@ class Partner extends Model
             case "MILITAR SEM DESCONTO EM FOLHA":
                 return "60,00";
                 break;
-
             default:
                 return "ISENTO";
                 break;
@@ -108,7 +107,7 @@ class Partner extends Model
 
         foreach ($payments as $key => $value) {
             if($value["payment_status"] == "ATRASADO"){
-                return "ATRASADO ".$value["payment_dtregister"];
+                return "ATRASADO ";
             }
         }
         return "EM DIA";
@@ -177,6 +176,16 @@ class Partner extends Model
             partner_monthlypayment='{$this->getMonthlValue($this->getpartner_assoctype())}'
             WHERE partner_id= '{$id}'");
 
+        return $results;
+    }
+
+    public static function updatePaymentStatus($id, $status)
+    {
+        $sql = new Sql();
+
+        $results = $sql->query("UPDATE tb_partner SET 
+            partner_status='$status'
+            WHERE partner_id= '{$id}'");
         return $results;
     }
 
