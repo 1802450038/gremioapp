@@ -4,7 +4,7 @@
             <div class="entity-profile-card-middle card-category">
                 <div class="entity-info sub-card-category">
                     <div class="row card-category-title">
-                        <h3>Comprovante</h3>
+                        <h3>Pagamento</h3>
                     </div>
                     <div class="info-items">
                         <div class="info-box">
@@ -33,13 +33,56 @@
                             <h3 class="info-value"><?php echo htmlspecialchars( $pagamento["payment_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
                         <div class="info-box">
+                            <h3 class="info-title">Vencimento</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $pagamento["payment_duedate"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
+                        </div>
+                        <div class="info-box">
                             <h3 class="info-title">Observação</h3>
                             <h3 class="info-value"><?php echo htmlspecialchars( $pagamento["payment_note"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
                     </div>
+                  
                 </div>
+                <div class="entity-profile-card-bottom card-category">
+                    <div class="entity-profile-bottom-actions sub-card-category">
+                        <div class="card-category-title">
+                            <h3>
+                                Ações
+                            </h3>
+                        </div>
+                    <div class="info-items">
+                        <div class="new-element-action">
+                            <a href="/admin/payment/pay<?php echo htmlspecialchars( $pagamento["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
+                                <button class="edit">Pagar</button>
+                            </a>
+                        </div>
+                        <div class="new-element-action">
+                            <a href="/admin/payment/delete<?php echo htmlspecialchars( $pagamento["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" onclick="return confirm('Deseja realmente excluir este registro?')">
+                                <button class="delete">Excluir</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
             </div>
 
         </div>
     </div>
 </div>
+
+

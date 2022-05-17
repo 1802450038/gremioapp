@@ -211,6 +211,7 @@
                                     <th style="font-weight: bolder;">ID</th>
                                     <th>SITUAÇÃO</th>
                                     <th>Data</th>
+                                    <th>Vencimento</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
@@ -224,6 +225,7 @@
                                     <td style="color: rgb(235, 71, 65);">{$value.payment_status}</td>
                                     {/if}
                                     <td>{$value.payment_dtregister}</td>
+                                    <td>{$value.payment_duedate}</td>
                                     <td>
                                         <a href="/admin/payment/profile{$value.payment_id}" class="small-action-btn">👁</a>
                                         <a href="/admin/payment/profile{$value.payment_id}" class="action-btn">Visualizar</a>

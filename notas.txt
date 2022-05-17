@@ -80,5 +80,10 @@
 
 
     Y/M/D
-    
+
     eu tenho uma data 2022-04-02
+
+    ATRASADO
+
+    EM DIA
+    

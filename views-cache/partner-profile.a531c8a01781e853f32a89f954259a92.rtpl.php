@@ -211,6 +211,7 @@
                                     <th style="font-weight: bolder;">ID</th>
                                     <th>SITUAÇÃO</th>
                                     <th>Data</th>
+                                    <th>Vencimento</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
@@ -224,6 +225,7 @@
                                     <td style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $value1["payment_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <?php } ?>
                                     <td><?php echo htmlspecialchars( $value1["payment_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["payment_duedate"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
                                         <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
                                         <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>

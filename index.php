@@ -136,12 +136,11 @@ $app->get("/admin/message", function () {
 // Get all
 
 $app->get('/admin/partners', function () {
-	
-	foreach (Partner::listAll() as $key => $value) {
-		var_dump($value["partner_fullname"]);
-		Payment::checkNotPaydPayments($value["partner_id"],$value["partner_fullname"]);
+	$partners = Partner::listAll();
+	$it = 0;
+	foreach ($partners as $key => $value) {
+		Payment::checkPayments($value["partner_id"], $value["partner_fullname"]);
 	}
-
 
 	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 	$type = (isset($_GET['type'])) ? $_GET['type'] : "partner_fullname";
@@ -293,7 +292,7 @@ $app->get('/admin/payments:partner_id', function ($partner_id) {
 
 	for ($i = 1; $i <= $pagination['pages']; $i++) {
 		array_push($pages, [
-			'link' => '/admin/payments'.$partner_id.'?' . http_build_query([
+			'link' => '/admin/payments' . $partner_id . '?' . http_build_query([
 				'page' => $i,
 				'type' => $type,
 				'term' => $term,
@@ -844,7 +843,7 @@ $app->post('/admin/payment/create:partner_id', function ($partner_id) {
 
 
 	$payment->setData($_POST);
-	
+
 	// var_dump($payment);
 
 	$payment->create($partner_id);

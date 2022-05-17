@@ -34,14 +34,23 @@ class Payment extends Model
         $sql = new Sql();
 
         $results =  $sql->select("
-                                SELECT payment_status,payment_dtregister 
+                                SELECT partner_id, partner_fullname,payment_id, payment_status, payment_dtregister, payment_duedate 
                                 FROM tb_payment 
                                 WHERE partner_id='{$partner_id}' 
                                 ORDER BY payment_dtregister 
                                 ASC
                             ");
         if ($results) {
-            return ((int)date("m", strtotime($results[0]["payment_dtregister"]))) - ((int)date("m"));
+            return array(
+                "partner_id" => $results[0]['partner_id'],
+                "partner_fullname" => $results[0]['partner_fullname'],
+                "payment_id" => $results[0]['payment_id'],
+                "payment_status" => $results[0]['payment_status'],
+                "payment_dtregister" => $results[0]['payment_dtregister'],
+                "payment_monthdiff" => (((int)date("m", strtotime($results[0]["payment_duedate"]))) - ((int)date("m"))) * -1
+            );
+        } else {
+            return 0;
         }
     }
 
@@ -127,6 +136,45 @@ class Payment extends Model
         }
     }
 
+    public function createInvoicePayment($partner_id, $partner_fullname)
+    {
+        $sql = new Sql();
+
+        $payment_duedate = date("Y-m", strtotime("+1 months"));
+        $payment_duedate = $payment_duedate . "-01";
+        var_dump($this->getDateForDatabase($payment_duedate));
+        $uniqueTag = $this->getUniqueTag();
+        if ($uniqueTag != null) {
+            $sql->query(
+                "INSERT INTO tb_payment (
+                    partner_id,
+                    partner_fullname,
+                    payment_uniquetag,
+                    payment_payer,
+                    payment_note,
+                    payment_value,
+                    payment_method,
+                    payment_status,
+                    payment_duedate
+                ) VALUES(
+                    '{$partner_id}',
+                    '{$partner_fullname}',
+                    '{$uniqueTag}',
+                    'Nenhum',
+                    'Pagamento em aberto',
+                    '0,00',
+                    'Não pago',
+                    'ABERTO',
+                    '{$this->getDateForDatabase($payment_duedate)}'
+                    )",
+            );
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
     public function createNotPaydPayment($partner_id, $partner_fullname, $payment_status = "ATRASADO")
     {
         $sql = new Sql();
@@ -164,26 +212,57 @@ class Payment extends Model
         }
     }
 
-
-
-    public static function checkNotPaydPayments($partner_id, $partner_fullname)
+    public static function updatePaymentStatus($id, $status)
     {
+        $sql = new Sql();
 
-        var_dump(Payment::getLastPaymentStatus($partner_id));
-        // if (Payment::getLastPaymentStatus($partner_id) == "ATR") {
-        //     $payment = new Payment();
-        //     $payment->createNotPaydPayment($partner_id, $partner_fullname);
-        //     Partner::updatePaymentStatus($partner_id, "ATRASADO");
+        $results = $sql->query("UPDATE tb_payment SET 
+            payment_status='$status'
+            WHERE payment_id= '{$id}'");
+        return $results;
+    }
 
-        // } elseif (Payment::getLastPaymentStatus($partner_id) == "EMD") {
-        //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+    public static function checkPayments($partner_id, $partner_fullname)
+    {
+        $payments = Payment::getLastPaymentStatus($partner_id);
+        $it = 0;
 
-        // } elseif (Payment::getLastPaymentStatus($partner_id) == "ADN") {
-        //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+        var_dump($payments);
+        echo "<br>";
+        echo "<br>";
 
-        // } elseif (Payment::getLastPaymentStatus($partner_id) == "NOV") {
-        //     Partner::updatePaymentStatus($partner_id, "NOVO");
-        // }
+        if ($payments != 0) {
+            foreach ($payments as $key => $value) {
+                if (
+                    $payments["payment_status"] != "PAGO" &&
+                    $payments["payment_status"] != "ATRASADO" &&
+                    $payments["payment_monthdiff"] > 0
+                ) {
+                    $payment = new Payment;
+                    Payment::updatePaymentStatus($payments["payment_id"], "ATRASADO");
+                    Partner::updatePaymentStatus($partner_id, "EM DÉBITO");
+                    $payment->createInvoicePayment($partner_id, $partner_fullname);
+                    return;
+                }
+
+
+
+                // if ($payments["payment_status"] == "PAGO") {
+                //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+                //     return;
+                // } elseif ($payments["payment_status"] == "ABERTO") {
+                //     Partner::updatePaymentStatus($partner_id, "EM DIA");
+                //     return;
+                // } else {
+                //     Partner::updatePaymentStatus($partner_id, "EM DÉBITO");
+                //     return;
+                // }
+
+            }
+        } else {
+            $payment = new Payment;
+            $payment->createInvoicePayment($partner_id, $partner_fullname);
+        }
     }
 
 
