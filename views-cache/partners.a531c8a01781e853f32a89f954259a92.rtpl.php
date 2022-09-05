@@ -57,7 +57,11 @@
                             <tr>
                                 <td style="font-weight: bolder;"><?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                 <td><?php echo htmlspecialchars( $value1["partner_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
-                                <td class="phone-mask"><?php echo htmlspecialchars( $value1["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <?php if( $value1["partner_monthlypayment"]=='ISENTO' ){ ?>
+                                <td >ISENTO</td>
+                                <?php }else{ ?>
+                                <td ><?php echo htmlspecialchars( $value1["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                <?php } ?>
                                 <td>
                                     <a href="/admin/partner/profile<?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="small-action-btn">👁</a>
                                     <a href="/admin/partner/profile<?php echo htmlspecialchars( $value1["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="action-btn">Visualizar</a>

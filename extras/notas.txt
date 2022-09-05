@@ -1,7 +1,7 @@
 1- Formulario {
-    # -> Apenas nome completo obrigatorio
+    #-> Apenas nome completo obrigatorio
     #-> Tirar idade
-    # -> Remover dia de pagamento
+    #-> Remover dia de pagamento
 }
     
 2- Pagamentos {
@@ -11,7 +11,7 @@
     -> Alterar data d
     -> Separar modo de pagamentos
     -> Adicionar observação para a edição quanto a data de pagamento para 3meses
-    -> TODOS PAGAMENTOS SÃO "EFETUADOS" DIA Ultimo dia mes
+    -> TODOS PAGAMENTOS SÃO "EFETUADOS" DIA: Ultimo dia mes
     -> Adicionar juros  para pagamento atrasado de 10% Pelo atraso sobre a parcela, não cumulativo
     -> Pagamento Pegar data do sistema
     -> Todos com mensalidade a partir de janeiro de 22
@@ -78,12 +78,3 @@
     payment_method
     payment_status
 
-
-    Y/M/D
-
-    eu tenho uma data 2022-04-02
-
-    ATRASADO
-
-    EM DIA
-    

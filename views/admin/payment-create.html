@@ -8,7 +8,7 @@
                 <form action="" method="post" class="form-group">
                     <div class="input-group">
                         <label for="partner_fullname" class="label-input">Nome Titular</label>
-                        <input type="text" class="text-input" id="partner_fullname" name="partner_fullname" style="pointer-events: none;" value="{$socio}">
+                        <input type="text" class="text-input" id="partner_fullname" name="partner_fullname" style="pointer-events: none;" value="{$payment.partner_fullname}">
                     </div>
                     <div class="input-group">
                         <label for="payment_payer" class="label-input">Pagador</label>
@@ -16,7 +16,7 @@
                     </div>
                     <div class="input-group">
                         <label for="payment_value" class="label-input">Valor</label>
-                        <input type="text" class="text-input renda" id="payment_value" name="payment_value" value="{$valor}">
+                        <input type="text" class="text-input renda" id="payment_value" name="payment_value" value="{$payment.payment_value}">
                     </div>
                     <div class="input-group">
                         <label for="payment_method" class="label-input">Metodo</label>

@@ -60,13 +60,6 @@
                 <i class="fas fa-door-open"></i>
             </a>
         </div>
-        <?php if( getIsAdmin() ){ ?>
-        <div>
-            <a href="/admin/logs">
-                <i class="fas fa-clock"></i>
-            </a>
-        </div>
-        <?php } ?>
     </div>
 
     <div class="value" hidden>

@@ -2,10 +2,8 @@
 
 namespace gremio\Model;
 
-use Exception;
 use \gremio\DB\Sql;
 use \gremio\Model;
-use Throwable;
 
 class Partner extends Model
 {
@@ -80,14 +78,24 @@ class Partner extends Model
         return $result[0]["partner_fullname"];
     }
 
-  
+    public static function getAssocType($id)
+    {
+        $sql = new Sql();
+
+        $result = $sql->select("SELECT partner_assoctype FROM tb_partner WHERE partner_id='$id'");
+
+        return $result[0]["partner_assoctype"];
+    }
+
+
     public function calcAge($date)
     {
         return date_diff(date_create($date), date_create('now'))->y;
     }
 
-    public function getMonthlValue($assoctype)
+    public static function getMonthlValue($id)
     {
+        $assoctype = Partner::getAssocType($id);
         switch ($assoctype) {
 
             case "CIVIL":
@@ -102,11 +110,12 @@ class Partner extends Model
         }
     }
 
-    public function getPaymentStatus($id){
+    public function getPaymentStatus($id)
+    {
         $payments = Payment::listByPartnerId($id);
 
         foreach ($payments as $key => $value) {
-            if($value["payment_status"] == "ATRASADO"){
+            if ($value["payment_status"] == "ATRASADO") {
                 return "ATRASADO ";
             }
         }
@@ -115,8 +124,6 @@ class Partner extends Model
 
     public function create()
     {
-
-
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
         if ($uniqueTag != null) {
@@ -179,14 +186,22 @@ class Partner extends Model
         return $results;
     }
 
-    public static function updatePaymentStatus($id, $status)
+    public static function updatePaymentStatus($id)
     {
-        $sql = new Sql();
 
-        $results = $sql->query("UPDATE tb_partner SET 
-            partner_status='$status'
-            WHERE partner_id= '{$id}'");
-        return $results;
+        $total = Payment::countNotPaydPayments($id);
+
+        if ($total > 0) {
+            $sql = new Sql();
+            $sql->query("UPDATE tb_partner SET 
+                partner_status='EM DÉBITO'
+                WHERE partner_id= '{$id}'");
+        } else {
+            $sql = new Sql();
+            $sql->query("UPDATE tb_partner SET 
+                partner_status='EM DIA'
+                WHERE partner_id= '{$id}'");
+        }
     }
 
     public function verifyField($field, $fieldName, $fieldLen, $value, $extra, $type, $prev_value = "")
@@ -251,7 +266,6 @@ class Partner extends Model
 
         $sql->query("DELETE FROM tb_partner  WHERE partner_id='{$this->getpartner_id()}'");
     }
-
 
     public function verifyTag($tag)
     {

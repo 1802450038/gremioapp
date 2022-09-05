@@ -9,11 +9,17 @@
                     <div class="info-items">
                         <div class="info-box">
                             <h3 class="info-title">Titular</h3>
-                            <a href="/admin/partner/profile{$pagamento.partner_id}" class="profile-action-bt">{$pagamento.partner_fullname}</a>
+                            <a href="/admin/partner/profile{$pagamento.partner_id}" class="profile-action-btn">{$pagamento.partner_fullname}</a>
                         </div>
                         <div class="info-box">
-                            <h3 class="info-title">Idendificador</h3>
-                            <h3 class="info-value">{$pagamento.payment_uniquetag}</h3>
+                            <h3 class="info-title">SITUAÇÃO</h3>
+                            {if="$pagamento.payment_status == 'PAGO'"}
+                            <h3 class="info-value" style="color: rgb(66, 230, 66);">{$pagamento.payment_status}</h3>
+                            {elseif="$pagamento.payment_status == 'ABERTO'"}
+                            <h3 class="info-value" style="color: rgb(250, 238, 68);">{$pagamento.payment_status}</h3>
+                            {else}
+                            <h3 class="info-value" style="color: rgb(235, 71, 65);">{$pagamento.payment_status}</h3>
+                            {/if}
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Pagador</h3>
@@ -29,12 +35,16 @@
                             <h3 class="info-value">{$pagamento.payment_method}</h3>
                         </div>
                         <div class="info-box">
-                            <h3 class="info-title">Data</h3>
-                            <h3 class="info-value">{$pagamento.payment_dtregister}</h3>
+                            <h3 class="info-title">Pago em</h3>
+                            
+                            <h3 class="info-value">{function="getDateForTemplate($pagamento.payment_date)"}</h3>
+                            
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Vencimento</h3>
-                            <h3 class="info-value">{$pagamento.payment_duedate}</h3>
+                            {if="$pagamento.payment_duedate != null"}
+                            <h3 class="info-value">{function="getDateForTemplate($pagamento.payment_duedate)"}</h3>
+                            {/if}
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Observação</h3>
@@ -51,11 +61,13 @@
                             </h3>
                         </div>
                     <div class="info-items">
+                        {if="$pagamento.payment_status !='PAGO'"}
                         <div class="new-element-action">
                             <a href="/admin/payment/pay{$pagamento.payment_id}">
-                                <button class="edit">Pagar</button>
+                                <button class="pay">Pagar</button>
                             </a>
                         </div>
+                        {/if}
                         <div class="new-element-action">
                             <a href="/admin/payment/delete{$pagamento.payment_id}" onclick="return confirm('Deseja realmente excluir este registro?')">
                                 <button class="delete">Excluir</button>

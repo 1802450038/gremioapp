@@ -19,16 +19,43 @@ table tbody td {
     transition: all .3s ease-in-out;
 }
 
+table tbody td .table-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 table tbody td .small-action-btn {
-    background-color: var(--blue-l-3);
-    color: var(--white-b);
     border-radius: 10px;
     padding: 5px 10px;
     text-decoration: none;
     font-weight: bold;
     font-size: 14pt;
-    box-shadow: var(--box-shadow-2);
+    border: none;
+    width: 20px;
 }
+
+table tbody td .small-action-btn i {
+    color: var(--white-r) !important;
+}
+
+.view {
+    padding: 10px 15px;
+    border-radius: 25px;
+    color: var(--blue-l-2);
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+    background-color: var(--blue-l-3);
+}
+.pay {
+    padding: 10px 15px;
+    border-radius: 25px;
+    color: var(--blue-l-2);
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+    background-color: var(--yellow);
+}
+
 
 table tbody tr {
     height: 60px;
@@ -75,20 +102,6 @@ table tbody tr td:hover {
     height: 100%;
 }
 
-.view {
-    padding: 10px 15px;
-    border-radius: 25px;
-    border: 1px solid var(--blue-l-2);
-    color: var(--blue-l-2);
-    text-decoration: none;
-    transition: all .3s ease-in-out;
-}
-
-.view:hover {
-    background-color: var(--blue-l-2);
-    color: white;
-}
-
 .table-title {
     font-size: 2.2rem;
     margin-bottom: 10px;
@@ -107,20 +120,16 @@ table tbody tr td:hover {
     padding-left: 0px;
 }
 
-.action-btn {
-    display: none;
-}
+
 
 @media (min-width: 800px) {
     table tbody td {
         font-size: 13pt;
     }
 }
-
+/* 
 @media (min-width: 600px) {
-    table tbody td .small-action-btn {
-        display: none;
-    }
+
     .action-btn {
         display: block;
         width: 90%;
@@ -133,4 +142,4 @@ table tbody tr td:hover {
         text-decoration: none;
         box-shadow: var(--box-shadow-1);
     }
-}
+} */

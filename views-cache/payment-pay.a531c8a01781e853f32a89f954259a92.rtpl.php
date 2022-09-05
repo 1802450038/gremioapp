@@ -2,7 +2,7 @@
     <div class="row">
         <div class="register-box">
             <div class="title-box">
-                <h3>Registrar Pagamento</h3>
+                <h3>Atualizar Pagamento</h3>
             </div>
             <div class="content-box">
                 <form action="" method="post" class="form-group">

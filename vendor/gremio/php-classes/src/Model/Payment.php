@@ -2,6 +2,8 @@
 
 namespace gremio\Model;
 
+use DateTime;
+use DateTimeZone;
 use \gremio\DB\Sql;
 use \gremio\Model;
 
@@ -15,40 +17,42 @@ class Payment extends Model
 
         return  $sql->select("SELECT * FROM tb_payment WHERE partner_id='{$partner_id}'");
     }
-    public static function listNotPaydByPartnerId($partner_id)
-    {
-        $sql = new Sql();
 
-        return  $sql->select("
-                                SELECT payment_status,payment_dtregister 
-                                FROM tb_payment 
-                                WHERE partner_id='{$partner_id}' 
-                                AND payment_status = 'ATRASADO'
-                                ORDER BY payment_dtregister 
-                                ASC
-                            ");
-    }
 
     public static function getLastPaymentStatus($partner_id)
     {
         $sql = new Sql();
 
         $results =  $sql->select("
-                                SELECT partner_id, partner_fullname,payment_id, payment_status, payment_dtregister, payment_duedate 
+                                SELECT * 
                                 FROM tb_payment 
                                 WHERE partner_id='{$partner_id}' 
-                                ORDER BY payment_dtregister 
-                                ASC
+                                ORDER BY payment_duedate 
+                                DESC LIMIT 0,1
                             ");
         if ($results) {
-            return array(
-                "partner_id" => $results[0]['partner_id'],
-                "partner_fullname" => $results[0]['partner_fullname'],
-                "payment_id" => $results[0]['payment_id'],
-                "payment_status" => $results[0]['payment_status'],
-                "payment_dtregister" => $results[0]['payment_dtregister'],
-                "payment_monthdiff" => (((int)date("m", strtotime($results[0]["payment_duedate"]))) - ((int)date("m"))) * -1
-            );
+            return $results[0];
+        } else {
+            return 0;
+        }
+    }
+
+    public static function countNotPaydPayments($partner_id)
+    {
+        $sql = new Sql();
+
+        $results =  $sql->select("
+                                SELECT SQL_CALC_FOUND_ROWS * 
+                                FROM tb_payment 
+                                WHERE partner_id='{$partner_id}'AND payment_status='ATRASADO'
+                                ORDER BY payment_duedate 
+                                DESC
+                            ");
+
+        $resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+                            
+        if ($results) {
+            return (int)$resultTotal[0]['nrtotal'];
         } else {
             return 0;
         }
@@ -91,17 +95,7 @@ class Payment extends Model
         ];
     }
 
-    public static function listAllUniqueTag()
-    {
-
-        $sql = new Sql();
-
-        $result = $sql->select("SELECT payment_uniquetag  FROM tb_payment");
-
-        return $result;
-    }
-
-    public function create($partner_id, $payment_status = "PAGO")
+    public function create($partner_id, $payment_status)
     {
         $sql = new Sql();
         $uniqueTag = $this->getUniqueTag();
@@ -127,29 +121,23 @@ class Payment extends Model
                     '{$payment_status}'
                     )",
             );
-
-            //     $results2 = $sql->select("SELECT payment_id FROM tb_payment
-            //     WHERE payment_id = LAST_INSERT_ID()");
-            //     return $results2[0];
         } else {
             return 0;
         }
     }
 
-    public function createInvoicePayment($partner_id, $partner_fullname)
+    public function createInvoicePayment($partner_id)
     {
+        // $payment_duedate = date("Y-m-t", strtotime("+1 months"));
         $sql = new Sql();
+        $payment_duedate = date("Y-m-t");
+        $paymentValue = Partner::getMonthlValue($partner_id);
+        $partner_fullname = Partner::getPartnerName($partner_id);
 
-        $payment_duedate = date("Y-m", strtotime("+1 months"));
-        $payment_duedate = $payment_duedate . "-01";
-        var_dump($this->getDateForDatabase($payment_duedate));
-        $uniqueTag = $this->getUniqueTag();
-        if ($uniqueTag != null) {
-            $sql->query(
-                "INSERT INTO tb_payment (
+        $sql->query(
+            "INSERT INTO tb_payment (
                     partner_id,
                     partner_fullname,
-                    payment_uniquetag,
                     payment_payer,
                     payment_note,
                     payment_value,
@@ -159,109 +147,41 @@ class Payment extends Model
                 ) VALUES(
                     '{$partner_id}',
                     '{$partner_fullname}',
-                    '{$uniqueTag}',
                     'Nenhum',
                     'Pagamento em aberto',
-                    '0,00',
+                    '{$paymentValue}',
                     'Não pago',
                     'ABERTO',
                     '{$this->getDateForDatabase($payment_duedate)}'
                     )",
-            );
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-
-    public function createNotPaydPayment($partner_id, $partner_fullname, $payment_status = "ATRASADO")
-    {
-        $sql = new Sql();
-
-        $payment_dtregister = date("Y-m-d", strtotime("-1 months"));
-
-        $uniqueTag = $this->getUniqueTag();
-        if ($uniqueTag != null) {
-            $sql->query(
-                "INSERT INTO tb_payment (
-                    partner_id,
-                    partner_fullname,
-                    payment_uniquetag,
-                    payment_payer,
-                    payment_note,
-                    payment_value,
-                    payment_method,
-                    payment_status,
-                    payment_dtregister
-                ) VALUES(
-                    '{$partner_id}',
-                    '{$partner_fullname}',
-                    '{$uniqueTag}',
-                    'Nenhum',
-                    'Pagamento atrasado',
-                    '0,00',
-                    'Não pago',
-                    '{$payment_status}',
-                    '{$payment_dtregister}'
-                    )",
-            );
-            return 1;
-        } else {
-            return 0;
-        }
+        );
+        return 1;
     }
 
     public static function updatePaymentStatus($id, $status)
     {
         $sql = new Sql();
-
         $results = $sql->query("UPDATE tb_payment SET 
             payment_status='$status'
             WHERE payment_id= '{$id}'");
         return $results;
     }
 
-    public static function checkPayments($partner_id, $partner_fullname)
+
+    public static function checkPayments($partner_id)
     {
-        $payments = Payment::getLastPaymentStatus($partner_id);
-        $it = 0;
-
-        var_dump($payments);
-        echo "<br>";
-        echo "<br>";
-
-        if ($payments != 0) {
-            foreach ($payments as $key => $value) {
-                if (
-                    $payments["payment_status"] != "PAGO" &&
-                    $payments["payment_status"] != "ATRASADO" &&
-                    $payments["payment_monthdiff"] > 0
-                ) {
-                    $payment = new Payment;
-                    Payment::updatePaymentStatus($payments["payment_id"], "ATRASADO");
-                    Partner::updatePaymentStatus($partner_id, "EM DÉBITO");
-                    $payment->createInvoicePayment($partner_id, $partner_fullname);
-                    return;
-                }
-
-
-
-                // if ($payments["payment_status"] == "PAGO") {
-                //     Partner::updatePaymentStatus($partner_id, "EM DIA");
-                //     return;
-                // } elseif ($payments["payment_status"] == "ABERTO") {
-                //     Partner::updatePaymentStatus($partner_id, "EM DIA");
-                //     return;
-                // } else {
-                //     Partner::updatePaymentStatus($partner_id, "EM DÉBITO");
-                //     return;
-                // }
-
-            }
+        $payment = new Payment();
+        $lastPayment = Payment::getLastPaymentStatus($partner_id);
+        if (!$lastPayment) {
+            $payment->createInvoicePayment($partner_id); 
         } else {
-            $payment = new Payment;
-            $payment->createInvoicePayment($partner_id, $partner_fullname);
+            $diff = Payment::getMonthsDif($lastPayment["payment_duedate"], date("Y-m-d"));
+            if ($diff > 0 && $lastPayment["payment_status"] != "PAGO") {
+                $payment->createInvoicePayment($partner_id);
+                Payment::updatePaymentStatus($lastPayment["payment_id"], "ATRASADO");
+            } else if ($diff > 0 && $lastPayment["payment_status"] == "PAGO") {
+                $payment->createInvoicePayment($partner_id);
+            }
         }
     }
 
@@ -273,60 +193,38 @@ class Payment extends Model
 
         $result = $sql->select("SELECT * FROM tb_payment WHERE payment_id='$id'");
 
-
         return $this->setData($result[0]);
     }
 
-    public function verifyTag($tag)
-    {
-        $allTags = $this->listAllUniqueTag();
-
-        for ($i = 0; $i < sizeof($allTags); $i++) {
-            if ($tag === $allTags[$i]["payment_uniquetag"]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public function getUniqueTag()
-    {
-        $prefix = "GRE-";
-        $ranNumber = rand(100, 99999999);
-        $today = getdate()["year"] - 2000;
-        $type = "PG";
-        $uniqueTag = $prefix . $today . $ranNumber . $type;
-        if ($this->verifyTag($uniqueTag)) {
-            return $uniqueTag;
-        } else {
-            $this->getUniqueTag();
-        }
-    }
-
-
-    public static function getPartnerName($id)
+    public function pay($payment_id)
     {
         $sql = new Sql();
+        $date = new DateTime();
+        $date->setTimezone(new DateTimeZone('America/Sao_Paulo'));
 
-        $result = $sql->select("SELECT partner_fullname FROM tb_partner WHERE partner_id='$id'");
+        $date = date_format($date, 'Y-m-d');
 
-        return $result[0]['partner_fullname'];
+        $results = $sql->query("UPDATE tb_payment SET
+        payment_payer = '{$this->getpayment_payer()}',
+        payment_note = '{$this->getpayment_note()}',
+        payment_date ='{$date}',
+        payment_method = '{$this->getpayment_method()}',
+        payment_status = 'PAGO'
+        WHERE payment_id ='{$payment_id}'");
+
+        return $results;
     }
-
-    public static function getPartnerValue($id)
-    {
-        $sql = new Sql();
-
-        $result = $sql->select("SELECT partner_monthlypayment FROM tb_partner WHERE partner_id='$id'");
-
-        return $result[0]["partner_monthlypayment"];
-    }
-
 
     public function getDateForDatabase(string $date): string
     {
         $timestamp = strtotime($date);
         $date_formated = date('Y-m-d', $timestamp);
         return $date_formated;
+    }
+
+
+    public static function getMonthsDif($dateA, $dateB)
+    {
+        return (date('m', strtotime($dateB)) - date('m', strtotime($dateA)));
     }
 }

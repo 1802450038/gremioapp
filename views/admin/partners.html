@@ -57,7 +57,11 @@
                             <tr>
                                 <td style="font-weight: bolder;">{$value.partner_id}</td>
                                 <td>{$value.partner_fullname}</td>
-                                <td class="phone-mask">{$value.partner_status}</td>
+                                {if="$value.partner_monthlypayment=='ISENTO'"}
+                                <td >ISENTO</td>
+                                {else}
+                                <td >{$value.partner_status}</td>
+                                {/if}
                                 <td>
                                     <a href="/admin/partner/profile{$value.partner_id}" class="small-action-btn">👁</a>
                                     <a href="/admin/partner/profile{$value.partner_id}" class="action-btn">Visualizar</a>

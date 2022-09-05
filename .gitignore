@@ -1,1 +1,5 @@
-*/res/admin
+*/res/rain
+*/vendor/rain
+*/vendor/slim
+*/vendor/phpmailer
+*/views-cache
