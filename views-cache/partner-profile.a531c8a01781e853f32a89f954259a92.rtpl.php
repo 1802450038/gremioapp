@@ -181,9 +181,7 @@
                                     <td><?php echo htmlspecialchars( $value1["dependent_familiarity"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
                                         <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="small-action-btn">👁</a>
-                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
-                                            class="action-btn">Visualizar</a>
+                                            class="small-action-btn view"><i class="fas fa-eye"></i></a>
                                     </td>
                                 </tr>
                                 <?php } ?>

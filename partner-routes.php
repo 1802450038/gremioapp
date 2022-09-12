@@ -6,6 +6,7 @@ use gremio\Model\Address;
 use gremio\Model\Dependent;
 use gremio\Model\Partner;
 use gremio\Model\Payment;
+use gremio\Model\Message;
 
 
 $app->get('/admin/partners', function () {
@@ -90,8 +91,8 @@ $app->get('/admin/partner/profile:id', function ($id) {
 	$partner->get($id);
 	$address = Address::listByPartnerId($id);
 	$dependents = Dependent::listByPartnerId($id);
-	$payments = Payment::listByPartnerIdCount($id);
 	Payment::checkPayments($id);
+	$payments = Payment::listByPartnerIdCount($id);
 	
 	
 	$page->setTpl("partner-profile", array(
@@ -108,21 +109,19 @@ $app->post('/admin/partner/update:id', function ($id) {
 
 	$partner->get((int)$id);
 
-	if ($partner->verifyField("partner_fullname", "Nome", 3, $_POST["partner_fullname"], 3, "U", $partner->getpartner_fullname()));
-
 	if (strlen($_POST["partner_mobphone"]) == 0) {
 		$_POST["partner_phone"] = "Não informado";
 	}
 	if (strlen($_POST["partner_resphone"]) == 0) {
 		$_POST["partner_phone"] = "Não informado";
 	}
+	if(!$partner->update($id, $_POST)){
+		Message::throwMessage("Erro", "0", "Falha ao editar o usuario");
+	} else {
+		// header("location: /admin/partner/profile$id");
+		// exit;
+	}
 
-	$partner->setData($_POST);
-
-	$partner->update($id);
-
-	header("location: /admin/partner/profile$id");
-	exit;
 });
 
 $app->post('/admin/partner/create', function () {

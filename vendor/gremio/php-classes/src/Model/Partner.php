@@ -88,14 +88,31 @@ class Partner extends Model
     }
 
 
+
     public function calcAge($date)
     {
         return date_diff(date_create($date), date_create('now'))->y;
     }
 
-    public static function getMonthlValue($id)
+    public static function getMonthlValueById($id)
     {
         $assoctype = Partner::getAssocType($id);
+        switch ($assoctype) {
+
+            case "CIVIL":
+                return "60,00";
+                break;
+            case "MILITAR SEM DESCONTO EM FOLHA":
+                return "60,00";
+                break;
+            default:
+                return "ISENTO";
+                break;
+        }
+    }
+
+    public static function getMonthlValue($assoctype)
+    {
         switch ($assoctype) {
 
             case "CIVIL":
@@ -164,11 +181,33 @@ class Partner extends Model
         }
     }
 
-    public function update($id)
+    public function update($id, $values)
     {
         $sql = new Sql();
 
-        $results = $sql->query("UPDATE tb_partner SET 
+        if (Partner::getMonthlValueById($id) != Partner::getMonthlValue($values["partner_assoctype"])) {
+            if (Payment::countNotPaydPayments($id) > 0) {
+                Message::throwMessage("Erro", "0", "Existem pendencias em aberto");
+                return false;
+            } else {
+                $sql->query("UPDATE tb_partner SET 
+                partner_fullname='{$this->getpartner_fullname()}',
+                partner_cpf='{$this->getpartner_cpf()}',
+                partner_identity='{$this->getpartner_identity()}',
+                partner_dtnasc='{$this->getDateForDatabase($this->getpartner_dtnasc())}',
+                partner_resphone='{$this->getpartner_resphone()}',
+                partner_mobphone='{$this->getpartner_mobphone()}',
+                partner_age='{$this->calcAge($this->getpartner_dtnasc())}',
+                partner_email='{$this->getpartner_email()}',
+                partner_milorganization='{$this->getpartner_milorganization()}',
+                partner_assoctype='{$this->getpartner_assoctype()}',
+                partner_dtassoc='{$this->getDateForDatabase($this->getpartner_dtassoc())}',
+                partner_monthlypayment='{$this->getMonthlValue($this->getpartner_assoctype())}'
+                WHERE partner_id= '{$id}'");
+                return true;
+            }
+        } else {
+            $sql->query("UPDATE tb_partner SET 
             partner_fullname='{$this->getpartner_fullname()}',
             partner_cpf='{$this->getpartner_cpf()}',
             partner_identity='{$this->getpartner_identity()}',
@@ -182,8 +221,8 @@ class Partner extends Model
             partner_dtassoc='{$this->getDateForDatabase($this->getpartner_dtassoc())}',
             partner_monthlypayment='{$this->getMonthlValue($this->getpartner_assoctype())}'
             WHERE partner_id= '{$id}'");
-
-        return $results;
+            return true;
+        }
     }
 
     public static function updatePaymentStatus($id)
