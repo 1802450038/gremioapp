@@ -2,6 +2,7 @@
 
 namespace gremio;
 
+use DateTime;
 use gremio\Model\Address;
 use gremio\Model\Dependent;
 use gremio\Model\Partner;
@@ -84,22 +85,32 @@ $app->get('/admin/partner/create', function () {
 $app->get('/admin/partner/profile:id', function ($id) {
 
 	$page = new PageAdmin();
-
 	$partner = new Partner();
-
-	Partner::updatePaymentStatus($id);
 	$partner->get($id);
+
 	$address = Address::listByPartnerId($id);
+
 	$dependents = Dependent::listByPartnerId($id);
-	Payment::checkPayments($id);
-	$payments = Payment::listByPartnerIdCount($id);
+
+	$payments = new Payment();
+
+	$payments->checkPayments($id,$partner->getpartner_fullname());
 	
+	$payments = $payments->listByPartnerId($id, $partner->getpartner_fullname(),date("Y"));		
+
+	$notPaydPayments = Payment::countNotPaydPayments($id);
+
 	
+
+	
+
 	$page->setTpl("partner-profile", array(
 		"socio" => $partner->getValues(),
 		"endereco" => $address,
 		"dependentes" => $dependents,
-		"pagamentos" => $payments
+		"pagamentos" => $payments,
+		"atrasados" => $notPaydPayments,
+		"data" => date("Y")
 	));
 });
 

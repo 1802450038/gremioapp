@@ -65,6 +65,11 @@
                         </div>
 
                         <div class="info-box">
+                            <h3 class="info-title">Dia de pagamento</h3>
+                            <h3 class="info-value">{$socio.partner_paymentday}</h3>
+                        </div>
+
+                        <div class="info-box">
                             <h3 class="info-title">Valor mensalidade</h3>
                             <h3 class="info-value">{$socio.partner_monthlypayment}</h3>
                         </div>
@@ -73,21 +78,15 @@
                             <h3 class="info-title">Status</h3>
                             {if="$socio.partner_status == 'EM DÉBITO'"}
                             <h3 class="info-value" style="color: rgb(235, 71, 65);">{$socio.partner_status}</td>
-                            {else}
-                            <h3 class="info-value" style="color: rgb(66, 230, 66);">{$socio.partner_status}</td>
-                            {/if}
+                                {else}
+                                <h3 class="info-value" style="color: rgb(66, 230, 66);">{$socio.partner_status}</td>
+                                    {/if}
                         </div>
 
-                        <div class="info-box">
-                            <h3 class="info-title">Pagamentos Atrsados</h3>
-                            <h3 class="info-value">{$atrasados}</h3>
-                        </div>
-                        
                         <div class="info-box">
                             <h3 class="info-title">Data de registro</h3>
                             <h3 class="info-value">{$socio.partner_dtregister}</h3>
                         </div>
-
                     </div>
                 </div>
 
@@ -204,7 +203,7 @@
                 {if="$socio.partner_monthlypayment != 'ISENTO'"}
                 <div class="entity-profile-bottom-depends sub-card-category">
                     <div class="card-category-title">
-                        <h3>Pagamentos - {$data}</h3>
+                        <h3>Pagamentos</h3>
                     </div>
                     {if="$pagamentos != false"}
                     <div>
@@ -212,25 +211,22 @@
                             <thead>
                                 <tr>
                                     <th>SITUAÇÃO</th>
-                                    <th>Mês</th>
-                                    <th>Ano</th>
+                                    <th>Data</th>
+                                    <th>Vencimento</th>
                                     <th>Ação</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {loop="$pagamentos"}
                                 <tr>
-                                    <td class={$value.payment_status}>{$value.payment_status}</td>
-                                    <td>{$value.payment_month_register}</td>
-                                    <td>{$value.payment_year_register}</td>
+                                    <td class="{$value.payment_status}">{$value.payment_status}</td>
+                                    <td>{function="getDateForTemplate($value.payment_dtregister)"}</td>
+                                    <td>{function="getDateForTemplate($value.payment_duedate)"}</td>
                                     <td>
                                         <div class="table-actions">
                                             <a href="/admin/payment/profile{$value.payment_id}"
                                                 class="small-action-btn view"><i class="fas fa-eye"></i></a>
-                                            {if="$value.payment_status == 'ABERTO'"}
-                                            <a href="/admin/payment/pay{$value.payment_id}"
-                                                class="small-action-btn pay"><i class="fas fa-dollar-sign"></i></a>
-                                            {elseif="$value.payment_status == 'ATRASADO'"}
+                                            {if="$value.payment_status !='PAGO'"}
                                             <a href="/admin/payment/pay{$value.payment_id}"
                                                 class="small-action-btn pay"><i class="fas fa-dollar-sign"></i></a>
                                             {/if}
@@ -245,6 +241,13 @@
                     <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum pagamento registrado</h3>
                     {/if}
                     <div class="payment-actions">
+                        <div class="new-payment">
+                            <a href="/admin/payment/create{$socio.partner_id}">
+                                <button class="edit payment-btn">
+                                    Registrar novo
+                                </button>
+                            </a>
+                        </div>
                         {if="$pagamentos != false"}
                         <div class="view-payment">
                             <a href="/admin/payments{$socio.partner_id}">

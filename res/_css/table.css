@@ -19,6 +19,19 @@ table tbody td {
     transition: all .3s ease-in-out;
 }
 
+table tbody td.PAGO {
+    color: rgb(66, 230, 66);
+    font-weight: bold;
+}
+table tbody td.ABERTO {
+    color: rgb(250, 238, 68);
+    font-weight: bold;
+}
+table tbody td.ATRASADO {
+    color: rgb(235, 71, 65);
+    font-weight: bold;
+}
+
 table tbody td .table-actions {
     display: flex;
     flex-direction: row;

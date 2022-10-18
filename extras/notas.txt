@@ -67,14 +67,73 @@
     > DELETE <NA>
     > PROFILE <NA>
 
-    payment_id
-    partner_id
-    partner_fullname
-    payment_uniquetag
-    payment_payer
-    payment_note
-    payment_dtregister
-    payment_value
-    payment_method
-    payment_status
+Regras de negocio Modulo Pagamentos {
 
+    
+    2- Pagamentos {
+        -> Categorizar os pagamentos em um modulo -> realizar buscas e filtros
+        -> Militar sem desconto e civil pagam     
+        -> Priorizar listagem de pagamentos e quantidade
+        -> Alterar data d
+        -> Separar modo de pagamentos
+        -> Adicionar observação para a edição quanto a data de pagamento para 3meses
+        -> TODOS PAGAMENTOS SÃO "EFETUADOS" DIA: Ultimo dia mes
+        -> Adicionar juros  para pagamento atrasado de 10% Pelo atraso sobre a parcela, não cumulativo
+        -> Pagamento Pegar data do sistema
+        -> Todos com mensalidade a partir de janeiro de 22
+    }
+    
+    1 -> Militar sem desconto em folha e civil pagam.
+    2 -> Todos pagamentos devem ser "EFETUADOS", ou seja cobrados no Ultimo dia do mes.
+    3 -> Pagamentos atrasados recembem multa de 10% sobreo valor total.
+    4 -> Quanto houverem muitos pagamentos em atraso destacar sobre isso.
+
+
+    Como funciona {
+        Cadastrar socios
+        Socios tem endereços
+        Socios tem dependentes
+        Socios tem pagamentos e cobranças
+        Os pagamentos são listados conforme os meses do ano 12 por ano
+
+            Como implementar ? {
+
+                Regra 1 {
+                    Adicionar um pagamento por mes
+                    Todos os meses verificar os pagamentos
+                    Ao termino do mes
+                    Criar um novo pagamento
+
+                    Condições :
+
+
+
+                }
+
+                Regra 2 {
+                    Adicionar uma lista de pagamentos no ano
+                    Todos os meses verificar os pagamentos
+                    Ao termino do mes
+                    Avaliar proximo pagamento
+
+                    Condições :
+
+                    Meses anteriores devem ser classificados como INDISPONIVEL
+
+                    Condições -> 
+                        PEGAR O ULTIMO PAGAMENTO {
+                            Avaliar Data {
+                                Se data < MES ATUAL
+                                CRIAR um PAGAMENTO COM O MES ATUAL E DEFINIR COMO ABERTO
+                                Se data == MES ATUAL
+                                AVALIAR PAGAMENTOS ANTERIORES
+                                SE HOUVEREM PAGAMENTOS EM ABERTO COM DATA ANTERIOR -> DEFINIR COMO Atrasado
+                                
+                            }
+                        }
+
+                }
+            }
+
+    }
+}

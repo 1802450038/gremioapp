@@ -9,15 +9,70 @@ use \gremio\Model;
 
 class Payment extends Model
 {
+    // OKK
+    private function getPaymentModel(
+        $partner_id,
+        $partner_fullname,
+        $payment_note,
+        $payment_month_register,
+        $payment_year_register,
+        $payment_status
+    ) {
+        $paymentModel = [
+            "payment_id" => "Dummy",
+            "partner_id" => "{$partner_id}",
+            "partner_fullname" => "{$partner_fullname}",
+            "payment_payer" => "X",
+            "payment_note" => "{$payment_note}",
+            "payment_dtregister" => "X",
+            "payment_month_register" => "{$payment_month_register}",
+            "payment_year_register" => "{$payment_year_register}",
+            "payment_duedate" => "X",
+            "payment_date" => "X",
+            "payment_value" => "X",
+            "payment_method" => "X",
+            "payment_status" => "{$payment_status}"
+        ];
 
+        return $paymentModel;
+    }
+    // OKK
+    private function getFullYear($partner_id, $partner_fullname, $year)
+    {
 
-    public static function listByPartnerId($partner_id)
+        $resultsForYear = array();
+
+        for ($i = 1; $i <= 12; $i++) {
+            if ($i < 10) {
+                $paymentModel = $this->getPaymentModel($partner_id, $partner_fullname, "Pagamento não registrado", "0" . ((string)$i), $year, "INDISPONIVEL");
+            } else {
+                $paymentModel = $this->getPaymentModel($partner_id, $partner_fullname, "Pagamento não registrado", ((string)$i), $year, "INDISPONIVEL");
+            }
+            array_push($resultsForYear, $paymentModel);
+        }
+
+        return $resultsForYear;
+    }
+    // OKK
+    public function listByPartnerId($partner_id, $partner_fullname, $year)
     {
         $sql = new Sql();
 
-        return  $sql->select("SELECT * FROM tb_payment WHERE partner_id='{$partner_id}'");
-    }
+        $results =  $sql->select("SELECT * FROM tb_payment WHERE partner_id='{$partner_id}' AND payment_year_register='{$year}' ");
 
+        $resultsForYear = $this->getFullYear($partner_id, $partner_fullname, $year);
+
+        if ($results) {
+            foreach ($results as $payment => $value) {
+                $resultsForYear[((int)$value["payment_month_register"]) - 1] = $value;
+            }
+        }
+
+
+
+        return $resultsForYear;
+    }
+    // OKK
     public  function get($id)
     {
         $sql = new Sql();
@@ -27,24 +82,53 @@ class Payment extends Model
         return $this->setData($result[0]);
     }
 
-    public static function getLastPaymentStatus($partner_id)
+    // OKK
+    public function getLastPayment($id)
     {
         $sql = new Sql();
 
-        $results =  $sql->select("
-                                SELECT * 
-                                FROM tb_payment 
-                                WHERE partner_id='{$partner_id}' 
-                                ORDER BY payment_duedate 
-                                DESC LIMIT 0,1
-                            ");
-        if ($results) {
-            return $results[0];
+        $result = $sql->select("SELECT payment_id, payment_month_register, payment_year_register, payment_status FROM tb_payment
+        WHERE partner_id = $id ORDER BY payment_id DESC LIMIT 1");
+
+
+
+        if ($result) {
+            return $result[0];
         } else {
-            return 0;
+            return "NÃO ENCONTRADO";
         }
     }
 
+    public function createInvoicePayment($partner_id, $partner_fullname)
+    {
+        $sql = new Sql();
+        $tz = 'America/Sao_Paulo';
+        $dt = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
+        $value = Partner::getMonthlValueById($partner_id);
+
+        $sql->query("INSERT INTO tb_payment (
+                partner_id,
+                partner_fullname,
+                payment_note,
+                payment_month_register,
+                payment_year_register,
+                paymenbt_date,
+                payment_value,
+                payment_status
+            ) VALUES(
+                '{$partner_id}',
+                '{$partner_fullname}',
+                'PAGAMENTO DO MES ATUAL',
+                '{$dt->format('m')}',
+                '{$dt->format('Y')}',
+                '{$value}',
+                'ABERTO'
+            )",);
+
+            
+    }
+
+    //  OKK
     public static function countNotPaydPayments($partner_id)
     {
         $sql = new Sql();
@@ -66,6 +150,7 @@ class Payment extends Model
         }
     }
 
+    // OKK
     public static function countOpenPayments($partner_id)
     {
         $sql = new Sql();
@@ -86,27 +171,14 @@ class Payment extends Model
             return 0;
         }
     }
-    
 
-    public static function listByPartnerIdCount($partner_id)
-    {
-        $sql = new Sql();
-
-        return  $sql->select("
-        SELECT * 
-        FROM tb_payment 
-        WHERE partner_id='{$partner_id}' 
-        ORDER BY payment_dtregister ASC LIMIT 0,12");
-    }
-
+    // OKK
     public function listPaymentsPageSearch($partner_id, $type = "payment_id", $term = "", $page = 1, $itemsPerPage = 10, $mode)
     {
 
         $start = ($page - 1) * $itemsPerPage;
 
         $sql = new Sql();
-
-
 
         $results = $sql->select("
 			SELECT SQL_CALC_FOUND_ROWS *
@@ -125,123 +197,14 @@ class Payment extends Model
         ];
     }
 
-    public function create($partner_id, $payment_status)
-    {
-        $sql = new Sql();
-        $uniqueTag = $this->getUniqueTag();
-        if ($uniqueTag != null) {
-            $sql->query(
-                "INSERT INTO tb_payment (
-                    partner_id,
-                    partner_fullname,
-                    payment_uniquetag,
-                    payment_payer,
-                    payment_note,
-                    payment_value,
-                    payment_method,
-                    payment_status
-                ) VALUES(
-                    '{$partner_id}',
-                    '{$this->getpartner_fullname()}',
-                    '{$uniqueTag}',
-                    '{$this->getpayment_payer()}',
-                    '{$this->getpayment_note()}',
-                    '{$this->getpayment_value()}',
-                    '{$this->getpayment_method()}',
-                    '{$payment_status}'
-                    )",
-            );
-        } else {
-            return 0;
-        }
-    }
 
-    public function createInvoicePayment($partner_id)
-    {
-        $sql = new Sql();
-        $payment_duedate = date("Y-m-t");
-        $paymentValue = Partner::getMonthlValueById($partner_id);
-        $partner_fullname = Partner::getPartnerName($partner_id);
 
-        $sql->query(
-            "INSERT INTO tb_payment (
-                    partner_id,
-                    partner_fullname,
-                    payment_payer,
-                    payment_note,
-                    payment_value,
-                    payment_method,
-                    payment_status,
-                    payment_duedate
-                ) VALUES(
-                    '{$partner_id}',
-                    '{$partner_fullname}',
-                    'Nenhum',
-                    'Pagamento em aberto',
-                    '{$paymentValue}',
-                    'Não pago',
-                    'ABERTO',
-                    '{$this->getDateForDatabase($payment_duedate)}'
-                    )",
-        );
-        return 1;
-    }
-
-    public static function updatePaymentStatus($id, $status)
-    {
-        $sql = new Sql();
-        $results = $sql->query("UPDATE tb_payment SET 
-            payment_status='$status'
-            WHERE payment_id= '{$id}'");
-        return $results;
-    }
-
-    public static function checkPayments($partner_id)
-    {
-        $payment = new Payment();
-        $paymentMonthly = Partner::getMonthlValueById($partner_id);
-        $lastPayment = Payment::getLastPaymentStatus($partner_id);
-        var_dump($lastPayment);
-        if ($paymentMonthly != "ISENTO") {
-            echo "tem q pagar";
-            if (!$lastPayment) {
-                $payment->createInvoicePayment($partner_id);
-            } else {
-                $diff = Payment::getMonthsDif($lastPayment["payment_duedate"], date("Y-m-d"));
-                if ($diff > 0) {
-                    if ($lastPayment["payment_status"] != "PAGO") {
-                        Payment::updatePaymentStatus($lastPayment["payment_id"], "ATRASADO");
-                        $payment->createInvoicePayment($partner_id);
-                    } else if ($lastPayment["payment_status"] == "PAGO") {
-                        $payment->createInvoicePayment($partner_id);
-                    }
-                }
-            }
-        } else {
-            if ($lastPayment) {
-                $diff = Payment::getMonthsDif($lastPayment["payment_duedate"], date("Y-m-d"));
-                if ($diff == 0) {
-                    if ($lastPayment["payment_status"] == "ABERTO") {
-                        Payment::updatePaymentStatus($lastPayment["payment_id"], "PAGO");
-                    }
-                }
-            }
-        }
-        Partner::updatePaymentStatus($partner_id);
-    }
-
-    public static function checkAllPayments($partner_id){
-
-    }
-
-  
-
+    // OKK
     public function pay($payment_id)
     {
         $sql = new Sql();
         $date = new DateTime();
         $date->setTimezone(new DateTimeZone('America/Sao_Paulo'));
-
         $date = date_format($date, 'Y-m-d');
 
         $results = $sql->query("UPDATE tb_payment SET
@@ -255,6 +218,7 @@ class Payment extends Model
         return $results;
     }
 
+    // OKK
     public function getDateForDatabase(string $date): string
     {
         $timestamp = strtotime($date);
@@ -262,8 +226,82 @@ class Payment extends Model
         return $date_formated;
     }
 
+    // OKK
     public static function getMonthsDif($dateA, $dateB)
     {
         return (date('m', strtotime($dateB)) - date('m', strtotime($dateA)));
+    }
+
+
+    public static function checkPayments($partner_id, $partner_fullname)
+    {
+        Payment::printLine();
+        var_dump($partner_id);
+
+        Payment::printLine();
+        $openPayments = Payment::countOpenPayments($partner_id);
+        var_dump($openPayments);
+
+        Payment::printLine();
+        $delayedPayements = Payment::countNotPaydPayments($partner_id);
+        var_dump($delayedPayements);
+
+        Payment::printLine();
+        $payment = new Payment();
+        $lastPayment = $payment->getLastPayment($partner_id);
+        var_dump($lastPayment);
+        Payment::printLine();
+
+        $tz = 'America/Sao_Paulo';
+        // $timestamp = time();
+        $dt = new DateTime("now", new DateTimeZone($tz)); //first argument "must" be a string
+        // $dt->setTimestamp($timestamp); //adjust the object to correct timestamp
+        // echo $dt->format('d.m.Y, H:i:s');
+        // var_dump($dt->format('m'));
+
+
+        if ($lastPayment["payment_month_register"] < $dt->format('m')) {
+            Payment::printLine();
+            echo "Nenhum pagamento registrado para o mes atual";
+            $payment->createInvoicePayment($partner_id,$partner_fullname);
+        } else {
+            var_dump($lastPayment);
+        }
+        // $payment = new Payment();
+        // $paymentMonthly = Partner::getMonthlValueById($partner_id);
+        // $lastPayment = Payment::getLastPaymentStatus($partner_id);
+        // var_dump($lastPayment);
+        // if ($paymentMonthly != "ISENTO") {
+        //     echo "tem q pagar";
+        //     if (!$lastPayment) {
+        //         $payment->createInvoicePayment($partner_id);
+        //     } else {
+        //         $diff = Payment::getMonthsDif($lastPayment["payment_duedate"], date("Y-m-d"));
+        //         if ($diff > 0) {
+        //             if ($lastPayment["payment_status"] != "PAGO") {
+        //                 Payment::updatePaymentStatus($lastPayment["payment_id"], "ATRASADO");
+        //                 $payment->createInvoicePayment($partner_id);
+        //             } else if ($lastPayment["payment_status"] == "PAGO") {
+        //                 $payment->createInvoicePayment($partner_id);
+        //             }
+        //         }
+        //     }
+        // } else {
+        //     if ($lastPayment) {
+        //         $diff = Payment::getMonthsDif($lastPayment["payment_duedate"], date("Y-m-d"));
+        //         if ($diff == 0) {
+        //             if ($lastPayment["payment_status"] == "ABERTO") {
+        //                 Payment::updatePaymentStatus($lastPayment["payment_id"], "PAGO");
+        //             }
+        //         }
+        //     }
+        // }
+        // Partner::updatePaymentStatus($partner_id);
+    }
+
+    public static function printLine()
+    {
+        echo "<br>";
+        echo "<br>";
     }
 }

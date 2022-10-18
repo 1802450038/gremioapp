@@ -1,4 +1,4 @@
-<div class="content-body">
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="content-body">
     <div class="profile-body">
         <div class="entity-profile-card">
             <div class="entity-profile-card-top card-category">
@@ -9,10 +9,10 @@
 
                 <div class="entity-title">
                     <div class="entity-name">
-                        <h3>{$socio.partner_fullname}</h3>
+                        <h3><?php echo htmlspecialchars( $socio["partner_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                     </div>
                     <div class="entity-sub-info">
-                        <p>{$socio.partner_assoctype}</p>
+                        <p><?php echo htmlspecialchars( $socio["partner_assoctype"], ENT_COMPAT, 'UTF-8', FALSE ); ?></p>
                     </div>
                 </div>
 
@@ -27,65 +27,65 @@
 
                         <div class="info-box">
                             <h3 class="info-title">Nome</h3>
-                            <h3 class="info-value">{$socio.partner_fullname}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Tag</h3>
-                            <h3 class="info-value">{$socio.partner_uniquetag}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_uniquetag"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Identidade</h3>
-                            <h3 class="info-value">{$socio.partner_identity}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_identity"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">CPF</h3>
-                            <h3 class="info-value">{$socio.partner_cpf}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_cpf"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Idade</h3>
-                            <h3 class="info-value">{$socio.partner_age}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_age"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Celular</h3>
-                            <h3 class="info-value phone-mask">{$socio.partner_mobphone}</h3>
+                            <h3 class="info-value phone-mask"><?php echo htmlspecialchars( $socio["partner_mobphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
                         <div class="info-box">
                             <h3 class="info-title">Residencial</h3>
-                            <h3 class="info-value phone-mask">{$socio.partner_resphone}</h3>
+                            <h3 class="info-value phone-mask"><?php echo htmlspecialchars( $socio["partner_resphone"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Tipo associação</h3>
-                            <h3 class="info-value">{$socio.partner_assoctype}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_assoctype"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Valor mensalidade</h3>
-                            <h3 class="info-value">{$socio.partner_monthlypayment}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_monthlypayment"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Status</h3>
-                            {if="$socio.partner_status == 'EM DÉBITO'"}
-                            <h3 class="info-value" style="color: rgb(235, 71, 65);">{$socio.partner_status}</td>
-                            {else}
-                            <h3 class="info-value" style="color: rgb(66, 230, 66);">{$socio.partner_status}</td>
-                            {/if}
+                            <?php if( $socio["partner_status"] == 'EM DÉBITO' ){ ?>
+                            <h3 class="info-value" style="color: rgb(235, 71, 65);"><?php echo htmlspecialchars( $socio["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                            <?php }else{ ?>
+                            <h3 class="info-value" style="color: rgb(66, 230, 66);"><?php echo htmlspecialchars( $socio["partner_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                            <?php } ?>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Pagamentos Atrsados</h3>
-                            <h3 class="info-value">{$atrasados}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $atrasados, ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
                         
                         <div class="info-box">
                             <h3 class="info-title">Data de registro</h3>
-                            <h3 class="info-value">{$socio.partner_dtregister}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $socio["partner_dtregister"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                     </div>
@@ -95,75 +95,75 @@
                     <div class="card-category-title">
                         <h3>Endereço</h3>
                     </div>
-                    {if="$endereco != false"}
+                    <?php if( $endereco != false ){ ?>
                     <div class="info-items">
 
                         <div class="info-box">
                             <h3 class="info-title">Rua</h3>
-                            <h3 class="info-value">{$endereco.address_road}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_road"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Numero</h3>
-                            <h3 class="info-value">{$endereco.address_number}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_number"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Complemento</h3>
-                            <h3 class="info-value">{$endereco.address_complement}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_complement"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Bairro</h3>
-                            <h3 class="info-value">{$endereco.address_district}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_district"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">CEP</h3>
-                            <h3 class="info-value">{$endereco.address_cep}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_cep"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Cidade</h3>
-                            <h3 class="info-value">{$endereco.address_city}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_city"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
 
                         <div class="info-box">
                             <h3 class="info-title">Estado</h3>
-                            <h3 class="info-value">{$endereco.address_state}</h3>
+                            <h3 class="info-value"><?php echo htmlspecialchars( $endereco["address_state"], ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                         </div>
                     </div>
                     <br>
                     <div class="info-items">
                         <div class="new-element-action">
-                            <a href="/admin/address/update{$endereco.address_id}">
+                            <a href="/admin/address/update<?php echo htmlspecialchars( $endereco["address_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                                 <button class="edit">Editar</button>
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/address/delete{$endereco.address_id}"
+                            <a href="/admin/address/delete<?php echo htmlspecialchars( $endereco["address_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                 onclick="return confirm('Deseja realmente excluir este registro?')">
                                 <button class="delete">Excluir</button>
                             </a>
                         </div>
                     </div>
-                    {else}
+                    <?php }else{ ?>
                     <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum endereço encontrado</h3>
                     <div class="new-element">
-                        <a href="/admin/address/create{$socio.partner_id}" class="new-element-button">
+                        <a href="/admin/address/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button">
                             <button>
                                 Incluir novo
                             </button>
                         </a>
                     </div>
-                    {/if}
+                    <?php } ?>
                 </div>
 
                 <div class="entity-profile-bottom-depends sub-card-category">
                     <div class="card-category-title">
                         <h3>Dependentes</h3>
                     </div>
-                    {if="$dependentes != false"}
+                    <?php if( $dependentes != false ){ ?>
                     <div>
                         <table>
                             <thead>
@@ -175,25 +175,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {loop="$dependentes"}
+                                <?php $counter1=-1;  if( isset($dependentes) && ( is_array($dependentes) || $dependentes instanceof Traversable ) && sizeof($dependentes) ) foreach( $dependentes as $key1 => $value1 ){ $counter1++; ?>
                                 <tr>
-                                    <td style="font-weight: bolder;">{$value.dependent_id}</td>
-                                    <td>{$value.dependent_fullname}</td>
-                                    <td>{$value.dependent_familiarity}</td>
+                                    <td style="font-weight: bolder;"><?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["dependent_fullname"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["dependent_familiarity"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
-                                        <a href="/admin/dependent/profile{$value.dependent_id}"
+                                        <a href="/admin/dependent/profile<?php echo htmlspecialchars( $value1["dependent_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                             class="small-action-btn view"><i class="fas fa-eye"></i></a>
                                     </td>
                                 </tr>
-                                {/loop}
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
-                    {else}
+                    <?php }else{ ?>
                     <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum familiar encontrado</h3>
-                    {/if}
+                    <?php } ?>
                     <div class="new-element">
-                        <a href="/admin/dependent/create{$socio.partner_id}" class="new-element-button">
+                        <a href="/admin/dependent/create<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="new-element-button">
                             <button>
                                 Incluir novo
                             </button>
@@ -201,12 +201,12 @@
                     </div>
                 </div>
 
-                {if="$socio.partner_monthlypayment != 'ISENTO'"}
+                <?php if( $socio["partner_monthlypayment"] != 'ISENTO' ){ ?>
                 <div class="entity-profile-bottom-depends sub-card-category">
                     <div class="card-category-title">
-                        <h3>Pagamentos - {$data}</h3>
+                        <h3>Pagamentos - <?php echo htmlspecialchars( $data, ENT_COMPAT, 'UTF-8', FALSE ); ?></h3>
                     </div>
-                    {if="$pagamentos != false"}
+                    <?php if( $pagamentos != false ){ ?>
                     <div>
                         <table>
                             <thead>
@@ -218,45 +218,45 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {loop="$pagamentos"}
+                                <?php $counter1=-1;  if( isset($pagamentos) && ( is_array($pagamentos) || $pagamentos instanceof Traversable ) && sizeof($pagamentos) ) foreach( $pagamentos as $key1 => $value1 ){ $counter1++; ?>
                                 <tr>
-                                    <td class={$value.payment_status}>{$value.payment_status}</td>
-                                    <td>{$value.payment_month_register}</td>
-                                    <td>{$value.payment_year_register}</td>
+                                    <td class=<?php echo htmlspecialchars( $value1["payment_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?>><?php echo htmlspecialchars( $value1["payment_status"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["payment_month_register"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
+                                    <td><?php echo htmlspecialchars( $value1["payment_year_register"], ENT_COMPAT, 'UTF-8', FALSE ); ?></td>
                                     <td>
                                         <div class="table-actions">
-                                            <a href="/admin/payment/profile{$value.payment_id}"
+                                            <a href="/admin/payment/profile<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                                 class="small-action-btn view"><i class="fas fa-eye"></i></a>
-                                            {if="$value.payment_status == 'ABERTO'"}
-                                            <a href="/admin/payment/pay{$value.payment_id}"
+                                            <?php if( $value1["payment_status"] == 'ABERTO' ){ ?>
+                                            <a href="/admin/payment/pay<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                                 class="small-action-btn pay"><i class="fas fa-dollar-sign"></i></a>
-                                            {elseif="$value.payment_status == 'ATRASADO'"}
-                                            <a href="/admin/payment/pay{$value.payment_id}"
+                                            <?php }elseif( $value1["payment_status"] == 'ATRASADO' ){ ?>
+                                            <a href="/admin/payment/pay<?php echo htmlspecialchars( $value1["payment_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                                 class="small-action-btn pay"><i class="fas fa-dollar-sign"></i></a>
-                                            {/if}
+                                            <?php } ?>
                                         </div>
                                     </td>
                                 </tr>
-                                {/loop}
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
-                    {else}
+                    <?php }else{ ?>
                     <h3 style="padding-left: 30px; padding-bottom: 30px;">Nenhum pagamento registrado</h3>
-                    {/if}
+                    <?php } ?>
                     <div class="payment-actions">
-                        {if="$pagamentos != false"}
+                        <?php if( $pagamentos != false ){ ?>
                         <div class="view-payment">
-                            <a href="/admin/payments{$socio.partner_id}">
+                            <a href="/admin/payments<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                                 <button class="print payment-btn">
                                     Visualizar todos
                                 </button>
                             </a>
                         </div>
-                        {/if}
+                        <?php } ?>
                     </div>
                 </div>
-                {/if}
+                <?php } ?>
             </div>
 
             <div class="entity-profile-card-bottom card-category">
@@ -268,12 +268,12 @@
                     </div>
                     <div class="info-items">
                         <div class="new-element-action">
-                            <a href="/admin/partner/update{$socio.partner_id}">
+                            <a href="/admin/partner/update<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">
                                 <button class="edit">Editar Sócio</button>
                             </a>
                         </div>
                         <div class="new-element-action">
-                            <a href="/admin/partner/delete{$socio.partner_id}"
+                            <a href="/admin/partner/delete<?php echo htmlspecialchars( $socio["partner_id"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"
                                 onclick="return confirm('Deseja realmente excluir este registro? Todos seus dependetes, endereço e cobranças serão excluidos')">
                                 <button class="delete">Excluir Sócio</button>
                             </a>
